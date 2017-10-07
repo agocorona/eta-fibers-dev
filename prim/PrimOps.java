@@ -25,6 +25,37 @@ import static eta.runtime.stg.Closures.*;
 
 public class PrimOps {
 
+    public static IdentityHashMap<TSO,Closure> tsoEvent = new IdentityHashMap<TSO,Closure>();
+
+    public static TSO getTSOC(StgContext context) {
+        return context.currentTSO;
+    }
+
+    public static void setConstStackC(StgContext context, TSO tso){ 
+        Closure[] newContStack = new Closure[tso.contStackTop];
+        context.currentTSO.contStackTop= tso.contStackTop;
+        System.arraycopy(tso.contStack,0,newContStack,0,tso.contStackTop );
+        context.currentTSO.contStack= newContStack;
+    }
+    
+    public static Closure getEventCC(StgContext context){
+        Closure v= tsoEvent.get(context.currentTSO);
+        System.out.println("getEvent");
+        if (v==null)  context.I1 = 0; else context.I1 = 1;
+        return v;
+    }
+    public static void setEventC(StgContext context,Closure ev){
+        System.out.println("setEvent");
+        tsoEvent.put(context.currentTSO,ev);
+    }
+    
+    public static void delEventCC(StgContext context){
+        System.out.println("delEvent");
+        tsoEvent.remove(context.currentTSO);
+    }
+
+
+
     public static void setCurrentC(StgContext context, Closure action) {
         context.currentTSO.currentCont = action;
     }

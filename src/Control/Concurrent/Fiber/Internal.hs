@@ -9,7 +9,7 @@ import Data.Typeable
 import Control.Concurrent
 import Control.Exception
 import Control.Monad.IO.Class
-
+import Data.Monoid hiding (Any)
 import Java.Core
 
 -- Fiber
@@ -19,10 +19,56 @@ newtype Fiber a = Fiber { unFiber :: State# RealWorld -> (# State# RealWorld, a 
 instance Functor Fiber where
   fmap f (Fiber io) = Fiber $ \s -> case io s of (# s1, a #) -> (# s1, f a #)
 
--- Refine this to fork separate fibers
+
+data Empty= Empty  deriving  (Show)
+instance Exception Empty
+  
+instance Alternative Fiber where
+  empty= throw Empty
+  Fiber mf <|> Fiber mg=  Fiber $ mf `catch#` \Empty -> mg
+
+catchf :: Exception e => Fiber a -> (e -> Fiber a) -> Fiber a
+catchf (Fiber exp)  exc=  
+    case IO exp `catch` (\e -> case exc e  of  Fiber r -> IO r) of
+        (IO r) -> Fiber r
+
+instance Monoid a => Monoid (Fiber a) where
+  mempty= return mempty
+  mappend x y=  (<>) <$> x <*> y 
+
 instance Applicative Fiber where
   pure = return
-  (<*>) = ap
+  -- (<*>) = ap
+  Fiber mf <*> Fiber mx = Fiber $ \s ->  
+    case newMutVar# Nothing s  of
+      (# s1, r1 #) -> case newMutVar# Nothing s1 of
+        (# s2, r2 #)  -> 
+          catch# (fparallel r1 r2 )     ( xparallel r1 r2 ) s2
+  
+      --   (State# RealWorld -> (# State# RealWorld, a #) )
+      --  -> (b -> State# RealWorld -> (# State# RealWorld, a #) )
+      --  -> State# RealWorld
+      --  -> (# State# RealWorld, a #)
+    where
+    
+    fparallel r1 r2 s=
+        case mf s of
+          (# s3, f #)  ->  case writeMutVar# r1  (Just f) s3  of
+            s4#  -> case readMutVar# r2   s4#  of
+              (# s5,mx #)  -> case mx of
+                Just x  -> (# s5, f x #)
+                Nothing -> raiseIO# (toException Empty) s5
+                
+    
+    xparallel  r1 r2  (_ :: Empty) s=
+        case mx s of
+          (# s3, x #)  ->  case writeMutVar# r2 (Just x)  s3  of
+            s4#  -> case readMutVar# r1   s4#  of
+              (# s5,mf #)  -> case mf of
+                Just f  -> (# s5, f x #)
+                Nothing -> raiseIO# (toException Empty) s5
+                
+
 
 instance Monad Fiber where
   return :: a -> Fiber a
@@ -69,6 +115,28 @@ resumeFiber = Fiber $ \s ->
                      (# s3, a' #) -> go a' s3
             (# s1, _, _ #) -> s1
 
+
+
+async :: IO a -> Fiber a 
+async (IO io)=  Fiber $ \s -> io' s
+        where
+        unFiber (Fiber fib)= fib
+        io' s =  case getEvent# s  of
+          (# s2,0#, _ #) -> case io s2 of
+                (# s3, x #) ->   case forkCont x s3  of
+                    (# s5, _ #) ->  raiseIO# (toException Empty) s5
+          
+          (# s2, _, x #) -> case delEvent#  s2 of 
+                      s3 -> (# s3, x #)
+
+forkCont x= \s -> case getTSO# s of (#s1, tso #) -> fork# (execCont tso) s1
+  where
+  execCont tso =IO $ \s -> case setEvent#  (unsafeCoerce  x) s of
+       s1 ->  case setContStack# tso s of s2 -> (unFiber resumeFiber) s2
+  unFiber (Fiber fib)= fib
+  
+            
+
 yield :: Fiber a
 yield = yield' False
 
@@ -95,6 +163,15 @@ forkFiber :: Fiber () -> IO ThreadId
 forkFiber (Fiber m)= IO $ \s ->
   case fork# m s of (# s1, tid #) -> (# s1, ThreadId tid #)
 
+setEvent x= Fiber $ \s -> case setEvent# (unsafeCoerce  x) s of s1 -> (#s1 , () #)
+
+getEvent :: Fiber (Maybe a)
+getEvent = Fiber $ \s -> case getEvent#  s of
+      (# s1, 1# , x #) -> (#s1, Just $ unsafeCoerce x #)
+      (# s1,  _ , _ #) -> (#s1, Nothing #)
+
+delEvent= Fiber $ \s -> case delEvent# s of  s1->  (# s1,() #)
+
 -- Runtime primitives
 
 data {-# CLASS "java.util.Stack" #-} Stack
@@ -118,3 +195,18 @@ foreign import prim "eta.fibers.PrimOps.popContStack"
 
 foreign import prim "eta.fibers.PrimOps.yieldFiber"
   yieldFiber# :: Int# -> State# s -> State# s
+
+foreign import prim "eta.fibers.PrimOps.getEventCC"
+  getEvent# :: State# s -> (# State# s, Int#, a #)
+
+foreign import prim "eta.fibers.PrimOps.setEventC"
+  setEvent# :: Any -> State# s -> State# s
+
+foreign import prim "eta.fibers.PrimOps.delEventCC"
+  delEvent# ::  State# s -> State# s
+
+foreign import prim "eta.fibers.PrimOps.getTSOC"
+   getTSO# ::  State# s -> (# State# s, ThreadId# #)
+
+foreign import prim "eta.fibers.PrimOps.setConstStackC"
+   setContStack# ::  ThreadId# -> State# s  -> State# s

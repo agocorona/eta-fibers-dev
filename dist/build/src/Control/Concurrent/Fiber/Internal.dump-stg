@@ -1,0 +1,1568 @@
+
+==================== STG syntax: ====================
+2017-10-07 23:35:53.777964 UTC
+
+Control.Concurrent.Fiber.Internal.$fMonoid_Fiber3
+  :: forall a_X5TG.
+     GHC.Base.Monoid a_X5TG =>
+     GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_X5TG #)
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,1*U(1*U,A,A)><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [$dMonoid_s9HL s_s9HM]
+        let {
+          sat_s9HN [Occ=Once] :: a3_X5TG
+          [LclId, Str=DmdType] =
+              \u srt:SRT:[] [] GHC.Base.mempty $dMonoid_s9HL;
+        } in  (#,#) [s_s9HM sat_s9HN];
+Control.Concurrent.Fiber.Internal.delEvent1
+  :: GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [s_s9HO]
+        case
+            __primcall  eta.fibers.PrimOps.delEventCC [s_s9HO]
+        of
+        s1_s9HQ [OS=OneShot]
+        { __DEFAULT -> (#,#) [s1_s9HQ GHC.Tuple.()];
+        };
+Control.Concurrent.Fiber.Internal.setEvent1
+  :: forall a_a553.
+     a_a553
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [x_s9HR s_s9HS]
+        case
+            __primcall  eta.fibers.PrimOps.setEventC [x_s9HR s_s9HS]
+        of
+        s1_s9HU [OS=OneShot]
+        { __DEFAULT -> (#,#) [s1_s9HU GHC.Tuple.()];
+        };
+Control.Concurrent.Fiber.Internal.getEvent1
+  :: forall a_a4VL.
+     GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, GHC.Base.Maybe a_a4VL #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [s_s9HV]
+        case
+            __primcall  eta.fibers.PrimOps.getEventCC [s_s9HV]
+        of
+        _ [Occ=Dead]
+        { (#,,#) ipv_s9HY [Occ=Once*]
+                 ipv1_s9HZ [Occ=Once!]
+                 ipv2_s9I0 [Occ=Once] ->
+              case ipv1_s9HZ of _ [Occ=Dead] {
+                __DEFAULT -> (#,#) [ipv_s9HY GHC.Base.Nothing];
+                1 ->
+                    let {
+                      sat_s9I2 [Occ=Once] :: GHC.Base.Maybe a3_a4VL
+                      [LclId, Str=DmdType] =
+                          NO_CCS GHC.Base.Just! [ipv2_s9I0];
+                    } in  (#,#) [ipv_s9HY sat_s9I2];
+              };
+        };
+Control.Concurrent.Fiber.Internal.forkFiber1
+  :: Control.Concurrent.Fiber.Internal.Fiber ()
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, GHC.Conc.Sync.ThreadId #)
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [ds_s9I3 s_s9I4]
+        case fork# [ds_s9I3 s_s9I4] of _ [Occ=Dead] {
+          (#,#) ipv_s9I6 [Occ=Once] ipv1_s9I7 [Occ=Once] ->
+              let {
+                sat_s9I8 [Occ=Once] :: GHC.Conc.Sync.ThreadId
+                [LclId, Str=DmdType] =
+                    NO_CCS GHC.Conc.Sync.ThreadId! [ipv1_s9I7];
+              } in  (#,#) [ipv_s9I6 sat_s9I8];
+        };
+Control.Concurrent.Fiber.Internal.$fMonad_Fiber1
+  :: forall a_a5FB b_a5FC.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5FB
+     -> (a_a5FB -> Control.Concurrent.Fiber.Internal.Fiber b_a5FC)
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, b_a5FC #)
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <C(S),U><L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [ds_s9I9 f_s9IA s_s9IB]
+        case
+            __primcall  eta.fibers.PrimOps.setCurrentC [ds_s9I9 s_s9IB]
+        of
+        s1_s9ID [OS=OneShot]
+        { __DEFAULT ->
+              case
+                  __primcall  eta.fibers.PrimOps.pushNextC [f_s9IA s1_s9ID]
+              of
+              s2_s9IF [OS=OneShot]
+              { __DEFAULT ->
+                    case ds_s9I9 s2_s9IF of _ [Occ=Dead] {
+                      (#,#) ipv_s9IH [Occ=Once] ipv1_s9II [Occ=Once] ->
+                          case
+                              __primcall  eta.fibers.PrimOps.popNextC [ipv_s9IH]
+                          of
+                          _ [Occ=Dead]
+                          { (#,#) ipv2_s9IL [Occ=Once] _ [Occ=Dead] ->
+                                case f_s9IA ipv1_s9II of fa_s9IN [Dmd=<C(S),U>] {
+                                  __DEFAULT ->
+                                      case
+                                          __primcall  eta.fibers.PrimOps.setCurrentC [fa_s9IN
+                                                                                      ipv2_s9IL]
+                                      of
+                                      s5_s9IP [OS=OneShot]
+                                      { __DEFAULT -> fa_s9IN s5_s9IP;
+                                      };
+                                };
+                          };
+                    };
+              };
+        };
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber3
+  :: forall a_a5GZ.
+     a_a5GZ
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a5GZ #)
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [a4_s9IQ s_s9IR] (#,#) [s_s9IR a4_s9IQ];
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber6
+  :: forall a_a5MO.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5MO
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5MO
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a5MO #)
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <L,C(U)><L,1*C1(U)><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [ds_s9IS ds1_s9IT eta_s9IU]
+        let {
+          sat_s9IX [Occ=Once]
+            :: Control.Concurrent.Fiber.Internal.Empty
+               -> GHC.Prim.State# GHC.Prim.RealWorld
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, a3_a5MO #)
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[] [ds2_s9IV]
+                  case ds2_s9IV of _ [Occ=Dead] {
+                    Control.Concurrent.Fiber.Internal.Empty -> ds1_s9IT;
+                  };
+        } in  catch# [ds_s9IS sat_s9IX eta_s9IU];
+Control.Concurrent.Fiber.Internal.$fFunctor_Fiber2
+  :: forall a_a5NZ b_a5O0.
+     (a_a5NZ -> b_a5O0)
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5NZ
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, b_a5O0 #)
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <L,1*C1(U)><C(S),1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [f_s9IY ds_s9IZ s_s9J0]
+        case ds_s9IZ s_s9J0 of _ [Occ=Dead] {
+          (#,#) ipv_s9J2 [Occ=Once] ipv1_s9J3 [Occ=Once] ->
+              let {
+                sat_s9J4 [Occ=Once] :: b_a5O0
+                [LclId, Str=DmdType] =
+                    \u srt:SRT:[] [] f_s9IY ipv1_s9J3;
+              } in  (#,#) [ipv_s9J2 sat_s9J4];
+        };
+lvl_r9D2 :: [GHC.Types.Char]
+[GblId, Str=DmdType] =
+    \u srt:SRT:[] []
+        GHC.CString.unpackCString#
+            "This code should not have been reached."#;
+Control.Concurrent.Fiber.Internal.block2 :: forall a_a4W4. a_a4W4
+[GblId, Str=DmdType b] =
+    \u srt:SRT:[05 :-> GHC.Err.error, r9D2 :-> lvl_r9D2] []
+        GHC.Err.error lvl_r9D2;
+lvl1_r9D3 :: [GHC.Types.Char]
+[GblId, Str=DmdType] =
+    \u srt:SRT:[] []
+        GHC.CString.unpackCString#
+            "Attempted to extract a value from a Fiber's yield or block."#;
+Control.Concurrent.Fiber.Internal.block3 :: GHC.Prim.Any
+[GblId, Str=DmdType b] =
+    \u srt:SRT:[05 :-> GHC.Err.error, r9D3 :-> lvl1_r9D3] []
+        GHC.Err.error lvl1_r9D3;
+lvl2_r9D4 :: [GHC.Types.Char]
+[GblId, Str=DmdType] =
+    \u srt:SRT:[] []
+        GHC.CString.unpackCString#
+            "You cannot yield or block as the last action of a Fiber."#;
+Control.Concurrent.Fiber.Internal.block4 :: forall a_a4W4. a_a4W4
+[GblId, Str=DmdType b] =
+    \u srt:SRT:[05 :-> GHC.Err.error, r9D4 :-> lvl2_r9D4] []
+        GHC.Err.error lvl2_r9D4;
+Control.Concurrent.Fiber.Internal.yield'1
+  :: forall a_a4W4.
+     GHC.Types.Bool
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a4W4 #)
+[GblId, Arity=2, Str=DmdType <L,U><L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9CP :-> Control.Concurrent.Fiber.Internal.block2,
+                r9CQ :-> Control.Concurrent.Fiber.Internal.block3,
+                r9CR :-> Control.Concurrent.Fiber.Internal.block4] [block5_s9J5
+                                                                    s_s9J6]
+        case
+            __primcall  eta.fibers.PrimOps.popContStack [s_s9J6]
+        of
+        _ [Occ=Dead]
+        { (#,,#) ipv_s9J9 [Occ=Once*]
+                 ipv1_s9JA [Occ=Once!]
+                 ipv2_s9JB [Occ=Once] ->
+              case ipv1_s9JA of _ [Occ=Dead] {
+                __DEFAULT ->
+                    (#,#) [ipv_s9J9 Control.Concurrent.Fiber.Internal.block4];
+                1 ->
+                    let {
+                      sat_s9JE [Occ=Once] :: GHC.Prim.Any
+                      [LclId, Str=DmdType] =
+                          \u srt:SRT:[r9CQ :-> Control.Concurrent.Fiber.Internal.block3] []
+                              ipv2_s9JB Control.Concurrent.Fiber.Internal.block3;
+                    } in 
+                      case
+                          __primcall  eta.fibers.PrimOps.setCurrentC [sat_s9JE ipv_s9J9]
+                      of
+                      s2_s9JF [OS=OneShot]
+                      { __DEFAULT ->
+                            case
+                                case block5_s9J5 of sat_s9JH {
+                                  __DEFAULT -> dataToTag# [sat_s9JH];
+                                }
+                            of
+                            sat_s9JI
+                            { __DEFAULT ->
+                                  case
+                                      __primcall  eta.fibers.PrimOps.yieldFiber [sat_s9JI s2_s9JF]
+                                  of
+                                  wild_s9JJ [OS=OneShot]
+                                  { __DEFAULT ->
+                                        (#,#) [wild_s9JJ Control.Concurrent.Fiber.Internal.block2];
+                                  };
+                            };
+                      };
+              };
+        };
+Control.Concurrent.Fiber.Internal.yield1
+  :: forall a_a4WK.
+     GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a4WK #)
+[GblId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9CP :-> Control.Concurrent.Fiber.Internal.block2,
+                r9CQ :-> Control.Concurrent.Fiber.Internal.block3,
+                r9CR :-> Control.Concurrent.Fiber.Internal.block4] [s_s9JK]
+        case
+            __primcall  eta.fibers.PrimOps.popContStack [s_s9JK]
+        of
+        _ [Occ=Dead]
+        { (#,,#) ipv_s9JN [Occ=Once*]
+                 ipv1_s9JO [Occ=Once!]
+                 ipv2_s9JP [Occ=Once] ->
+              case ipv1_s9JO of _ [Occ=Dead] {
+                __DEFAULT ->
+                    (#,#) [ipv_s9JN Control.Concurrent.Fiber.Internal.block4];
+                1 ->
+                    let {
+                      sat_s9JS [Occ=Once] :: GHC.Prim.Any
+                      [LclId, Str=DmdType] =
+                          \u srt:SRT:[r9CQ :-> Control.Concurrent.Fiber.Internal.block3] []
+                              ipv2_s9JP Control.Concurrent.Fiber.Internal.block3;
+                    } in 
+                      case
+                          __primcall  eta.fibers.PrimOps.setCurrentC [sat_s9JS ipv_s9JN]
+                      of
+                      s2_s9JT [OS=OneShot]
+                      { __DEFAULT ->
+                            case
+                                __primcall  eta.fibers.PrimOps.yieldFiber [0 s2_s9JT]
+                            of
+                            wild_s9JV [OS=OneShot]
+                            { __DEFAULT ->
+                                  (#,#) [wild_s9JV Control.Concurrent.Fiber.Internal.block2];
+                            };
+                      };
+              };
+        };
+Control.Concurrent.Fiber.Internal.block1
+  :: forall a_a4WC.
+     GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a4WC #)
+[GblId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9CP :-> Control.Concurrent.Fiber.Internal.block2,
+                r9CQ :-> Control.Concurrent.Fiber.Internal.block3,
+                r9CR :-> Control.Concurrent.Fiber.Internal.block4] [s_s9JW]
+        case
+            __primcall  eta.fibers.PrimOps.popContStack [s_s9JW]
+        of
+        _ [Occ=Dead]
+        { (#,,#) ipv_s9JZ [Occ=Once*]
+                 ipv1_s9K0 [Occ=Once!]
+                 ipv2_s9K1 [Occ=Once] ->
+              case ipv1_s9K0 of _ [Occ=Dead] {
+                __DEFAULT ->
+                    (#,#) [ipv_s9JZ Control.Concurrent.Fiber.Internal.block4];
+                1 ->
+                    let {
+                      sat_s9K4 [Occ=Once] :: GHC.Prim.Any
+                      [LclId, Str=DmdType] =
+                          \u srt:SRT:[r9CQ :-> Control.Concurrent.Fiber.Internal.block3] []
+                              ipv2_s9K1 Control.Concurrent.Fiber.Internal.block3;
+                    } in 
+                      case
+                          __primcall  eta.fibers.PrimOps.setCurrentC [sat_s9K4 ipv_s9JZ]
+                      of
+                      s2_s9K5 [OS=OneShot]
+                      { __DEFAULT ->
+                            case
+                                __primcall  eta.fibers.PrimOps.yieldFiber [1 s2_s9K5]
+                            of
+                            wild_s9K7 [OS=OneShot]
+                            { __DEFAULT ->
+                                  (#,#) [wild_s9K7 Control.Concurrent.Fiber.Internal.block2];
+                            };
+                      };
+              };
+        };
+Control.Concurrent.Fiber.Internal.$fException_Empty1
+  :: [GHC.Types.Char]
+[GblId, Str=DmdType] =
+    \u srt:SRT:[] [] GHC.CString.unpackCString# "Empty"#;
+Control.Concurrent.Fiber.Internal.$fMonad_Fiber_$s$dmfail
+  :: forall a_a5HB.
+     GHC.Base.String -> Control.Concurrent.Fiber.Internal.Fiber a_a5HB
+[GblId, Arity=1, Str=DmdType <B,U>b, Unf=OtherCon []] =
+    \r srt:SRT:[05 :-> GHC.Err.error] [eta_s9K8]
+        GHC.Err.error eta_s9K8;
+Control.Concurrent.Fiber.Internal.catchf1
+  :: forall a_a53O e_a53P.
+     GHC.Exception.Exception e_a53P =>
+     Control.Concurrent.Fiber.Internal.Fiber a_a53O
+     -> (e_a53P -> Control.Concurrent.Fiber.Internal.Fiber a_a53O)
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a53O #)
+[GblId,
+ Arity=4,
+ Caf=NoCafRefs,
+ Str=DmdType <L,1*U(A,A,A,1*C1(U),A)><L,C(U)><L,1*C1(C1(U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [$dException_s9K9 ds_s9KA exc_s9KB eta_s9KC]
+        let {
+          sat_s9KH [Occ=Once]
+            :: GHC.Exception.SomeException
+               -> GHC.Prim.State# GHC.Prim.RealWorld
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, a3_a53O #)
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[] [e1_s9KD]
+                  case
+                      GHC.Exception.fromException $dException_s9K9 e1_s9KD
+                  of
+                  _ [Occ=Dead]
+                  { GHC.Base.Nothing ->
+                        let {
+                          sat_s9KF [Occ=Once]
+                            :: GHC.Prim.State# GHC.Prim.RealWorld
+                               -> (# GHC.Prim.State# GHC.Prim.RealWorld, a3_a53O #)
+                          [LclId, Str=DmdType] =
+                              \r srt:SRT:[] [eta_B1] raiseIO# [e1_s9KD eta_B1];
+                        } in  sat_s9KF;
+                    GHC.Base.Just e'_s9KG [Occ=Once] -> exc_s9KB e'_s9KG;
+                  };
+        } in  catch# [ds_s9KA sat_s9KH eta_s9KC];
+Control.Concurrent.Fiber.Internal.$fShow_Empty1
+  :: Control.Concurrent.Fiber.Internal.Empty -> GHC.Show.ShowS
+[GblId, Arity=2, Str=DmdType <S,1*H><L,1*U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9BL :-> Control.Concurrent.Fiber.Internal.$fException_Empty1] [ds_s9KI
+                                                                                eta_s9KJ]
+        case ds_s9KI of _ [Occ=Dead] {
+          Control.Concurrent.Fiber.Internal.Empty ->
+              GHC.Base.++
+                  Control.Concurrent.Fiber.Internal.$fException_Empty1 eta_s9KJ;
+        };
+Control.Concurrent.Fiber.Internal.$fMonadIO_Fiber1
+  :: forall a_a5EM. GHC.Types.IO a_a5EM -> GHC.Types.IO a_a5EM
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <S,1*U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [ds_s9KL] ds_s9KL;
+Control.Concurrent.Fiber.Internal.unFiber1
+  :: forall a_a43B.
+     Control.Concurrent.Fiber.Internal.Fiber a_a43B
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a43B
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <S,1*U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [ds_s9KM] ds_s9KM;
+Control.Concurrent.Fiber.Internal.delEvent
+  :: Control.Concurrent.Fiber.Internal.Fiber ()
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        Control.Concurrent.Fiber.Internal.delEvent1 eta_B1;
+Control.Concurrent.Fiber.Internal.getEvent
+  :: forall a_a3MT.
+     Control.Concurrent.Fiber.Internal.Fiber (GHC.Base.Maybe a_a3MT)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        Control.Concurrent.Fiber.Internal.getEvent1 eta_B1;
+Control.Concurrent.Fiber.Internal.setEvent
+  :: forall a_a551.
+     a_a551 -> Control.Concurrent.Fiber.Internal.Fiber ()
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.setEvent1 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.forkFiber
+  :: Control.Concurrent.Fiber.Internal.Fiber ()
+     -> GHC.Types.IO GHC.Conc.Sync.ThreadId
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.forkFiber1 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.yield'
+  :: forall a_a3N8.
+     GHC.Types.Bool -> Control.Concurrent.Fiber.Internal.Fiber a_a3N8
+[GblId, Arity=2, Str=DmdType <L,U><L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9D0 :-> Control.Concurrent.Fiber.Internal.yield'1] [eta_B2
+                                                                     eta_B1]
+        Control.Concurrent.Fiber.Internal.yield'1 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.block
+  :: forall a_a3N9. Control.Concurrent.Fiber.Internal.Fiber a_a3N9
+[GblId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9CO :-> Control.Concurrent.Fiber.Internal.block1] [eta_B1]
+        Control.Concurrent.Fiber.Internal.block1 eta_B1;
+Control.Concurrent.Fiber.Internal.yield
+  :: forall a_a3NA. Control.Concurrent.Fiber.Internal.Fiber a_a3NA
+[GblId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9CZ :-> Control.Concurrent.Fiber.Internal.yield1] [eta_B1]
+        Control.Concurrent.Fiber.Internal.yield1 eta_B1;
+Control.Concurrent.Fiber.Internal.runFiberWithBlock
+  :: forall a_a3NC.
+     Control.Concurrent.Fiber.Internal.Fiber a_a3NC
+     -> GHC.Types.IO
+          (Data.Either.Either
+             (GHC.Types.Bool, Control.Concurrent.Fiber.Internal.Fiber a_a3NC)
+             a_a3NC)
+[GblId, Arity=1, Str=DmdType <B,A>b, Unf=OtherCon []] =
+    \r srt:SRT:[04B :-> GHC.Err.undefined] [ds_s9KN] GHC.Err.undefined;
+Control.Concurrent.Fiber.Internal.runFiber
+  :: forall a_a3R8.
+     Control.Concurrent.Fiber.Internal.Fiber a_a3R8
+     -> GHC.Types.IO
+          (Data.Either.Either
+             (Control.Concurrent.Fiber.Internal.Fiber a_a3R8) a_a3R8)
+[GblId, Arity=1, Str=DmdType <B,A>b, Unf=OtherCon []] =
+    \r srt:SRT:[04B :-> GHC.Err.undefined] [ds_s9KO] GHC.Err.undefined;
+Control.Concurrent.Fiber.Internal.catchf
+  :: forall a_a3R9 e_a3RA.
+     GHC.Exception.Exception e_a3RA =>
+     Control.Concurrent.Fiber.Internal.Fiber a_a3R9
+     -> (e_a3RA -> Control.Concurrent.Fiber.Internal.Fiber a_a3R9)
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a3R9
+[GblId,
+ Arity=4,
+ Caf=NoCafRefs,
+ Str=DmdType <L,1*U(A,A,A,1*C1(U),A)><L,C(U)><L,1*C1(C1(U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B4 eta_B3 eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.catchf1
+            eta_B4 eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.getCurrentC#
+  :: forall s_a42V[sk].
+     GHC.Prim.State# s_a42V[sk]
+     -> (# GHC.Prim.State# s_a42V[sk], GHC.Prim.Any #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        __primcall  eta.fibers.PrimOps.getCurrentC [eta_B1];
+Control.Concurrent.Fiber.Internal.setCurrentC#
+  :: forall s_a42U[sk].
+     GHC.Prim.Any
+     -> GHC.Prim.State# s_a42U[sk] -> GHC.Prim.State# s_a42U[sk]
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        __primcall  eta.fibers.PrimOps.setCurrentC [eta_B2 eta_B1];
+Control.Concurrent.Fiber.Internal.pushNextC#
+  :: forall s_a42T[sk].
+     GHC.Prim.Any
+     -> GHC.Prim.State# s_a42T[sk] -> GHC.Prim.State# s_a42T[sk]
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        __primcall  eta.fibers.PrimOps.pushNextC [eta_B2 eta_B1];
+Control.Concurrent.Fiber.Internal.popNextC#
+  :: forall s_a42S[sk].
+     GHC.Prim.State# s_a42S[sk]
+     -> (# GHC.Prim.State# s_a42S[sk], GHC.Prim.Any #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        __primcall  eta.fibers.PrimOps.popNextC [eta_B1];
+Control.Concurrent.Fiber.Internal.popContStack#
+  :: forall s_a42R[sk].
+     GHC.Prim.State# s_a42R[sk]
+     -> (# GHC.Prim.State# s_a42R[sk], GHC.Prim.Int#, GHC.Prim.Any #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        __primcall  eta.fibers.PrimOps.popContStack [eta_B1];
+Control.Concurrent.Fiber.Internal.yieldFiber#
+  :: forall s_a42Q[sk].
+     GHC.Prim.Int#
+     -> GHC.Prim.State# s_a42Q[sk] -> GHC.Prim.State# s_a42Q[sk]
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        __primcall  eta.fibers.PrimOps.yieldFiber [eta_B2 eta_B1];
+Control.Concurrent.Fiber.Internal.getEvent#
+  :: forall s_a42O[sk] a_a42P[sk].
+     GHC.Prim.State# s_a42O[sk]
+     -> (# GHC.Prim.State# s_a42O[sk], GHC.Prim.Int#, a_a42P[sk] #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        __primcall  eta.fibers.PrimOps.getEventCC [eta_B1];
+Control.Concurrent.Fiber.Internal.setEvent#
+  :: forall s_a42N[sk].
+     GHC.Prim.Any
+     -> GHC.Prim.State# s_a42N[sk] -> GHC.Prim.State# s_a42N[sk]
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        __primcall  eta.fibers.PrimOps.setEventC [eta_B2 eta_B1];
+Control.Concurrent.Fiber.Internal.delEvent#
+  :: forall s_a42M[sk].
+     GHC.Prim.State# s_a42M[sk] -> GHC.Prim.State# s_a42M[sk]
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        __primcall  eta.fibers.PrimOps.delEventCC [eta_B1];
+Control.Concurrent.Fiber.Internal.getTSO#
+  :: forall s_a42L[sk].
+     GHC.Prim.State# s_a42L[sk]
+     -> (# GHC.Prim.State# s_a42L[sk], GHC.Prim.ThreadId# #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        __primcall  eta.fibers.PrimOps.getTSOC [eta_B1];
+Control.Concurrent.Fiber.Internal.setContStack#
+  :: forall s_a42K[sk].
+     GHC.Prim.ThreadId#
+     -> GHC.Prim.State# s_a42K[sk] -> GHC.Prim.State# s_a42K[sk]
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        __primcall  eta.fibers.PrimOps.setConstStackC [eta_B2 eta_B1];
+Control.Concurrent.Fiber.Internal.unFiber
+  :: forall a_a3MS.
+     Control.Concurrent.Fiber.Internal.Fiber a_a3MS
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a3MS #)
+[GblId[[RecSel]],
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <S,1*U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        Control.Concurrent.Fiber.Internal.unFiber1 eta_B1;
+Control.Concurrent.Fiber.Internal.$fException_Empty_ww3
+  :: GHC.Base.String
+[GblId, Str=DmdType] =
+    \u srt:SRT:[] []
+        GHC.CString.unpackCString#
+            "eta-fibers-dev-0.1.0.0-99dPUWzLxqHBnjG723XFqq"#;
+Control.Concurrent.Fiber.Internal.$fException_Empty_ww4
+  :: GHC.Base.String
+[GblId, Str=DmdType] =
+    \u srt:SRT:[] []
+        GHC.CString.unpackCString# "Control.Concurrent.Fiber.Internal"#;
+Control.Concurrent.Fiber.Internal.$fException_Empty_wild
+  :: Data.Typeable.Internal.TyCon
+[GblId, Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS Data.Typeable.Internal.TyCon! [__word64 9964921688479109139
+                                          __word64 3389613444278491053
+                                          Control.Concurrent.Fiber.Internal.$fException_Empty_ww3
+                                          Control.Concurrent.Fiber.Internal.$fException_Empty_ww4
+                                          Control.Concurrent.Fiber.Internal.$fException_Empty1];
+Control.Concurrent.Fiber.Internal.$fException_Empty4
+  :: Data.Typeable.Internal.TypeRep
+[GblId, Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS Data.Typeable.Internal.TypeRep! [__word64 9964921688479109139
+                                            __word64 3389613444278491053
+                                            Control.Concurrent.Fiber.Internal.$fException_Empty_wild
+                                            GHC.Types.[]
+                                            GHC.Types.[]];
+Control.Concurrent.Fiber.Internal.$fException_Empty3
+  :: GHC.Prim.Proxy# Control.Concurrent.Fiber.Internal.Empty
+     -> Data.Typeable.Internal.TypeRep
+[GblId, Arity=1, Str=DmdType <L,A>m, Unf=OtherCon []] =
+    \r srt:SRT:[r9BS :-> Control.Concurrent.Fiber.Internal.$fException_Empty4] [wild_s9L0]
+        Control.Concurrent.Fiber.Internal.$fException_Empty4;
+Control.Concurrent.Fiber.Internal.$fFunctor_Fiber1
+  :: forall a1_a6R8 b_a6R9.
+     a1_a6R8
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a6R9
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a1_a6R8 #)
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><C(S),1*C1(U(U,A))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_s9L1 eta1_s9L2 eta2_s9L3]
+        case eta1_s9L2 eta2_s9L3 of _ [Occ=Dead] {
+          (#,#) ipv_s9L5 [Occ=Once] _ [Occ=Dead] ->
+              (#,#) [ipv_s9L5 eta_s9L1];
+        };
+Control.Concurrent.Fiber.Internal.$fFunctor_Fiber_$c<$
+  :: forall a_a5O9 b_a5OA.
+     a_a5O9
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5OA
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5O9
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><C(S),1*C1(U(U,A))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B3 eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.$fFunctor_Fiber1
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fFunctor_Fiber_$cfmap
+  :: forall a_a5NX b_a5NY.
+     (a_a5NX -> b_a5NY)
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5NX
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5NY
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <L,1*C1(U)><C(S),1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B3 eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.$fFunctor_Fiber2
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fFunctor_Fiber [InlPrag=[ALWAYS] CONLIKE]
+  :: GHC.Base.Functor Control.Concurrent.Fiber.Internal.Fiber
+[GblId[DFunId], Caf=NoCafRefs, Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS GHC.Base.D:Functor! [Control.Concurrent.Fiber.Internal.$fFunctor_Fiber2
+                                Control.Concurrent.Fiber.Internal.$fFunctor_Fiber1];
+Control.Concurrent.Fiber.Internal.$fException_Empty_$cfromException
+  :: GHC.Exception.SomeException
+     -> GHC.Base.Maybe Control.Concurrent.Fiber.Internal.Empty
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <S,1*U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_s9L7]
+        case eta_s9L7 of _ [Occ=Dead] {
+          GHC.Exception.SomeException $dException1_s9L9 [Occ=Once]
+                                      e2_s9LA [Occ=Once] ->
+              case
+                  GHC.Exception.$p1Exception $dException1_s9L9 GHC.Prim.proxy#
+              of
+              _ [Occ=Dead]
+              { Data.Typeable.Internal.TypeRep dt_s9LC [Occ=Once]
+                                               dt1_s9LD [Occ=Once]
+                                               _ [Occ=Dead]
+                                               _ [Occ=Dead]
+                                               _ [Occ=Dead] ->
+                    case
+                        eqWord64# [dt_s9LC __word64 9964921688479109139]
+                    of
+                    _ [Occ=Dead]
+                    { __DEFAULT -> GHC.Base.Nothing [];
+                      1 ->
+                          case
+                              eqWord64# [dt1_s9LD __word64 3389613444278491053]
+                          of
+                          _ [Occ=Dead]
+                          { __DEFAULT -> GHC.Base.Nothing [];
+                            1 -> GHC.Base.Just [e2_s9LA];
+                          };
+                    };
+              };
+        };
+Control.Concurrent.Fiber.Internal.$fException_Empty2
+  :: Data.Typeable.Internal.Typeable
+       Control.Concurrent.Fiber.Internal.Empty
+[GblId, Arity=1, Str=DmdType <L,A>m, Unf=OtherCon []] =
+    \r srt:SRT:[r9BR :-> Control.Concurrent.Fiber.Internal.$fException_Empty3] [eta_B1]
+        Control.Concurrent.Fiber.Internal.$fException_Empty3 eta_B1;
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$c<|>
+  :: forall a_a5MN.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5MN
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5MN
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5MN
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <L,C(U)><L,1*C1(U)><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B3 eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.$fAlternative_Fiber6
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fMonoid_Fiber_$cmempty
+  :: forall a_a5KY.
+     GHC.Base.Monoid a_a5KY =>
+     Control.Concurrent.Fiber.Internal.Fiber a_a5KY
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,1*U(1*U,A,A)><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.$fMonoid_Fiber3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber_$cpure
+  :: forall a_a5HH.
+     a_a5HH -> Control.Concurrent.Fiber.Internal.Fiber a_a5HH
+[GblId, Arity=2, Caf=NoCafRefs, Str=DmdType, Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.$fApplicative_Fiber3
+            eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fMonad_Fiber_$c>>=
+  :: forall a_a5F8 b_a5F9.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5F8
+     -> (a_a5F8 -> Control.Concurrent.Fiber.Internal.Fiber b_a5F9)
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5F9
+[GblId,
+ Arity=3,
+ Caf=NoCafRefs,
+ Str=DmdType <C(S),U><L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B3 eta_B2 eta_B1]
+        Control.Concurrent.Fiber.Internal.$fMonad_Fiber1
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fMonadIO_Fiber_$cliftIO
+  :: forall a_a5EK.
+     GHC.Types.IO a_a5EK
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5EK
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <S,1*U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        Control.Concurrent.Fiber.Internal.$fMonadIO_Fiber1 eta_B1;
+Control.Concurrent.Fiber.Internal.$fShow_Empty_$cshowList
+  :: [Control.Concurrent.Fiber.Internal.Empty] -> GHC.Show.ShowS
+[GblId, Arity=2, Str=DmdType, Unf=OtherCon []] =
+    \r srt:SRT:[r9BO :-> Control.Concurrent.Fiber.Internal.$fShow_Empty1] [eta_B2
+                                                                           eta_B1]
+        GHC.Show.showList__
+            Control.Concurrent.Fiber.Internal.$fShow_Empty1 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fException_Empty_$cshow
+  :: Control.Concurrent.Fiber.Internal.Empty -> GHC.Base.String
+[GblId, Arity=1, Str=DmdType <S,1*H>, Unf=OtherCon []] =
+    \r srt:SRT:[r9BL :-> Control.Concurrent.Fiber.Internal.$fException_Empty1] [x_s9LJ]
+        case x_s9LJ of _ [Occ=Dead] {
+          Control.Concurrent.Fiber.Internal.Empty ->
+              Control.Concurrent.Fiber.Internal.$fException_Empty1;
+        };
+Control.Concurrent.Fiber.Internal.$fException_Empty_$cdisplayException
+  :: Control.Concurrent.Fiber.Internal.Empty -> GHC.Base.String
+[GblId, Arity=1, Str=DmdType, Unf=OtherCon []] =
+    \r srt:SRT:[r9BK :-> Control.Concurrent.Fiber.Internal.$fException_Empty_$cshow] [eta_B1]
+        Control.Concurrent.Fiber.Internal.$fException_Empty_$cshow eta_B1;
+Control.Concurrent.Fiber.Internal.$fShow_Empty_$cshowsPrec
+  :: GHC.Types.Int
+     -> Control.Concurrent.Fiber.Internal.Empty -> GHC.Show.ShowS
+[GblId,
+ Arity=3,
+ Str=DmdType <L,A><S,1*H><L,1*U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9BL :-> Control.Concurrent.Fiber.Internal.$fException_Empty1] [ds_s9LL
+                                                                                ds1_s9LM
+                                                                                eta_s9LN]
+        case ds1_s9LM of _ [Occ=Dead] {
+          Control.Concurrent.Fiber.Internal.Empty ->
+              GHC.Base.++
+                  Control.Concurrent.Fiber.Internal.$fException_Empty1 eta_s9LN;
+        };
+Control.Concurrent.Fiber.Internal.$fShow_Empty [InlPrag=[ALWAYS] CONLIKE]
+  :: GHC.Show.Show Control.Concurrent.Fiber.Internal.Empty
+[GblId[DFunId], Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS GHC.Show.D:Show! [Control.Concurrent.Fiber.Internal.$fShow_Empty_$cshowsPrec
+                             Control.Concurrent.Fiber.Internal.$fException_Empty_$cshow
+                             Control.Concurrent.Fiber.Internal.$fShow_Empty_$cshowList];
+Control.Concurrent.Fiber.Internal.$fException_Empty [InlPrag=[ALWAYS] CONLIKE]
+  :: GHC.Exception.Exception Control.Concurrent.Fiber.Internal.Empty
+[GblId[DFunId], Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS GHC.Exception.D:Exception! [Control.Concurrent.Fiber.Internal.$fException_Empty3
+                                       Control.Concurrent.Fiber.Internal.$fShow_Empty
+                                       Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$ctoException
+                                       Control.Concurrent.Fiber.Internal.$fException_Empty_$cfromException
+                                       Control.Concurrent.Fiber.Internal.$fException_Empty_$cshow];
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$ctoException [Occ=LoopBreaker]
+  :: Control.Concurrent.Fiber.Internal.Empty
+     -> GHC.Exception.SomeException
+[GblId, Arity=1, Str=DmdType, Unf=OtherCon []] =
+    \r srt:SRT:[r45B :-> Control.Concurrent.Fiber.Internal.$fException_Empty] [eta_B1]
+        GHC.Exception.SomeException [Control.Concurrent.Fiber.Internal.$fException_Empty
+                                     eta_B1];
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$cempty
+  :: forall a_a5MA. Control.Concurrent.Fiber.Internal.Fiber a_a5MA
+[GblId, Str=DmdType b] =
+    \u srt:SRT:[r45B :-> Control.Concurrent.Fiber.Internal.$fException_Empty] []
+        GHC.Exception.throw1
+            Control.Concurrent.Fiber.Internal.Empty
+            Control.Concurrent.Fiber.Internal.$fException_Empty;
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4
+  :: GHC.Exception.SomeException
+[GblId, Str=DmdType] =
+    \u srt:SRT:[r9B2 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$ctoException] []
+        Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$ctoException
+            Control.Concurrent.Fiber.Internal.Empty;
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+  :: forall a_a5HU b_a5HV.
+     Control.Concurrent.Fiber.Internal.Fiber (a_a5HU -> b_a5HV)
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5HU
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, b_a5HV #)
+[GblId,
+ Arity=3,
+ Str=DmdType <L,1*C1(U(U,U))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B1 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4] [ds_s9LP
+                                                                                  ds1_s9LQ
+                                                                                  s_s9LR]
+        case newMutVar# [GHC.Base.Nothing s_s9LR] of _ [Occ=Dead] {
+          (#,#) ipv_s9LT [Occ=Once] ipv1_s9LU ->
+              case newMutVar# [GHC.Base.Nothing ipv_s9LT] of _ [Occ=Dead] {
+                (#,#) ipv2_s9LW [Occ=Once] ipv3_s9LX ->
+                    let {
+                      sat_s9MO [Occ=Once]
+                        :: Control.Concurrent.Fiber.Internal.Empty
+                           -> GHC.Prim.State# GHC.Prim.RealWorld
+                           -> (# GHC.Prim.State# GHC.Prim.RealWorld, b_a5HV #)
+                      [LclId, Str=DmdType] =
+                          \r srt:SRT:[r9B1 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4] [ds4_s9MB
+                                                                                                        s1_s9MC]
+                              case ds1_s9LQ s1_s9MC of _ [Occ=Dead] {
+                                (#,#) ipv4_s9ME [Occ=Once] ipv5_s9MF ->
+                                    let {
+                                      sat_s9MG [Occ=Once] :: GHC.Base.Maybe a3_a5HU
+                                      [LclId, Str=DmdType] =
+                                          NO_CCS GHC.Base.Just! [ipv5_s9MF];
+                                    } in 
+                                      case
+                                          writeMutVar# [ipv3_s9LX sat_s9MG ipv4_s9ME]
+                                      of
+                                      s4#_s9MH [OS=OneShot]
+                                      { __DEFAULT ->
+                                            case readMutVar# [ipv1_s9LU s4#_s9MH] of _ [Occ=Dead] {
+                                              (#,#) ipv6_s9MJ [Occ=Once*] ipv7_s9MK [Occ=Once!] ->
+                                                  case ipv7_s9MK of _ [Occ=Dead] {
+                                                    GHC.Base.Nothing ->
+                                                        raiseIO# [Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4
+                                                                  ipv6_s9MJ];
+                                                    GHC.Base.Just f_s9MM [Occ=Once!] ->
+                                                        let {
+                                                          sat_s9MN [Occ=Once] :: b_a5HV
+                                                          [LclId, Str=DmdType] =
+                                                              \u srt:SRT:[] [] f_s9MM ipv5_s9MF;
+                                                        } in  (#,#) [ipv6_s9MJ sat_s9MN];
+                                                  };
+                                            };
+                                      };
+                              }; } in
+                    let {
+                      sat_s9MA [Occ=Once]
+                        :: GHC.Prim.State# GHC.Prim.RealWorld
+                           -> (# GHC.Prim.State# GHC.Prim.RealWorld, b_a5HV #)
+                      [LclId, Str=DmdType] =
+                          \r srt:SRT:[r9B1 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4] [s1_s9LY]
+                              case ds_s9LP s1_s9LY of _ [Occ=Dead] {
+                                (#,#) ipv4_s9M0 [Occ=Once] ipv5_s9M1 ->
+                                    let {
+                                      sat_s9M2 [Occ=Once] :: GHC.Base.Maybe (a3_a5HU -> b_a5HV)
+                                      [LclId, Str=DmdType] =
+                                          NO_CCS GHC.Base.Just! [ipv5_s9M1];
+                                    } in 
+                                      case
+                                          writeMutVar# [ipv1_s9LU sat_s9M2 ipv4_s9M0]
+                                      of
+                                      s4#_s9M3 [OS=OneShot]
+                                      { __DEFAULT ->
+                                            case readMutVar# [ipv3_s9LX s4#_s9M3] of _ [Occ=Dead] {
+                                              (#,#) ipv6_s9M5 [Occ=Once*] ipv7_s9M6 [Occ=Once!] ->
+                                                  case ipv7_s9M6 of _ [Occ=Dead] {
+                                                    GHC.Base.Nothing ->
+                                                        raiseIO# [Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4
+                                                                  ipv6_s9M5];
+                                                    GHC.Base.Just x_s9M8 [Occ=Once] ->
+                                                        let {
+                                                          sat_s9M9 [Occ=Once] :: b_a5HV
+                                                          [LclId, Str=DmdType] =
+                                                              \u srt:SRT:[] [] ipv5_s9M1 x_s9M8;
+                                                        } in  (#,#) [ipv6_s9M5 sat_s9M9];
+                                                  };
+                                            };
+                                      };
+                              };
+                    } in  catch# [sat_s9MA sat_s9MO ipv2_s9LW];
+              };
+        };
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber_$c<*>
+  :: forall a_a5HS b_a5HT.
+     Control.Concurrent.Fiber.Internal.Fiber (a_a5HS -> b_a5HT)
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5HS
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5HT
+[GblId,
+ Arity=3,
+ Str=DmdType <L,1*C1(U(U,U))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta_B3
+                                                                                  eta_B2
+                                                                                  eta_B1]
+        Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber2
+  :: forall a1_a6TQ.
+     Control.Concurrent.Fiber.Internal.Empty
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a1_a6TQ] #)
+[GblId, Arity=2, Caf=NoCafRefs, Str=DmdType, Unf=OtherCon []] =
+    \r srt:SRT:[] [ds_s9MP eta_s9MQ]
+        case ds_s9MP of _ [Occ=Dead] {
+          Control.Concurrent.Fiber.Internal.Empty ->
+              (#,#) [eta_s9MQ GHC.Types.[]];
+        };
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber5
+  :: forall a1_a6TQ.
+     Control.Concurrent.Fiber.Internal.Fiber a1_a6TQ
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a1_a6TQ] #)
+[GblId, Arity=2, Str=DmdType <L,C(U(U,U))><L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta_s9MS
+                                                                                  eta1_s9MT]
+        let {
+          a4_s9MU [Occ=Once]
+            :: GHC.Prim.State# GHC.Prim.RealWorld
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a3_a6TQ] -> [a3_a6TQ] #)
+          [LclId,
+           Arity=1,
+           Str=DmdType <L,U> {a6TR-><C(S),1*C1(U(U,U))>},
+           Unf=OtherCon []] =
+              \r srt:SRT:[] [s_s9MV]
+                  case eta_s9MS s_s9MV of _ [Occ=Dead] {
+                    (#,#) ipv_s9MX [Occ=Once] ipv1_s9MY [Occ=OnceL] ->
+                        let {
+                          sat_s9MZ [Occ=Once] :: [a3_a6TQ] -> [a3_a6TQ]
+                          [LclId, Str=DmdType] =
+                              \r srt:SRT:[] [eta_B1] : [ipv1_s9MY eta_B1];
+                        } in  (#,#) [ipv_s9MX sat_s9MZ];
+                  }; } in
+        let {
+          a5_s9N0 [Occ=Once]
+            :: GHC.Prim.State# GHC.Prim.RealWorld
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a3_a6TQ] #)
+          [LclId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
+              \r srt:SRT:[] [eta2_s9N2]
+                  catch# [a6_s9N1
+                          Control.Concurrent.Fiber.Internal.$fAlternative_Fiber2
+                          eta2_s9N2];
+          a6_s9N1 [Occ=LoopBreaker]
+            :: GHC.Prim.State# GHC.Prim.RealWorld
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a3_a6TQ] #)
+          [LclId, Arity=1, Str=DmdType, Unf=OtherCon []] =
+              \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta_B1]
+                  Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+                      a4_s9MU a5_s9N0 eta_B1;
+        } in  a6_s9N1 eta1_s9MT;
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$csome
+  :: forall a_a5MZ.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5MZ
+     -> Control.Concurrent.Fiber.Internal.Fiber [a_a5MZ]
+[GblId, Arity=2, Str=DmdType <L,C(U(U,U))><L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9B4 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber5] [eta_B2
+                                                                                  eta_B1]
+        Control.Concurrent.Fiber.Internal.$fAlternative_Fiber5
+            eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber1
+  :: forall a1_a6TK.
+     Control.Concurrent.Fiber.Internal.Fiber a1_a6TK
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a1_a6TK] #)
+[GblId, Arity=2, Str=DmdType <L,C(U(U,U))><L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta_s9N3
+                                                                                  eta1_s9N4]
+        let {
+          a4_s9N5 [Occ=LoopBreaker]
+            :: GHC.Prim.State# GHC.Prim.RealWorld
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a3_a6TK] #)
+          [LclId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
+              \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta2_s9N6]
+                  let {
+                    sat_s9NC [Occ=Once]
+                      :: Control.Concurrent.Fiber.Internal.Fiber ([a3_a6TK] -> [a3_a6TK])
+                    [LclId, Str=DmdType] =
+                        \r srt:SRT:[] [s_s9N7]
+                            case eta_s9N3 s_s9N7 of _ [Occ=Dead] {
+                              (#,#) ipv_s9N9 [Occ=Once] ipv1_s9NA [Occ=OnceL] ->
+                                  let {
+                                    sat_s9NB [Occ=Once] :: [a3_a6TK] -> [a3_a6TK]
+                                    [LclId, Str=DmdType] =
+                                        \r srt:SRT:[] [eta_B1] : [ipv1_s9NA eta_B1];
+                                  } in  (#,#) [ipv_s9N9 sat_s9NB];
+                            }; } in
+                  let {
+                    sat_s9ND [Occ=Once]
+                      :: GHC.Prim.State# GHC.Prim.RealWorld
+                         -> (# GHC.Prim.State# GHC.Prim.RealWorld, [a3_a6TK] #)
+                    [LclId, Str=DmdType] =
+                        \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta_B1]
+                            Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+                                sat_s9NC a4_s9N5 eta_B1;
+                  } in 
+                    catch# [sat_s9ND
+                            Control.Concurrent.Fiber.Internal.$fAlternative_Fiber2
+                            eta2_s9N6];
+        } in  a4_s9N5 eta1_s9N4;
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$cmany
+  :: forall a_a5N7.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5N7
+     -> Control.Concurrent.Fiber.Internal.Fiber [a_a5N7]
+[GblId, Arity=2, Str=DmdType <L,C(U(U,U))><L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r9AY :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber1] [eta_B2
+                                                                                  eta_B1]
+        Control.Concurrent.Fiber.Internal.$fAlternative_Fiber1
+            eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber1
+  :: forall a1_a6SN b_a6SO.
+     Control.Concurrent.Fiber.Internal.Fiber a1_a6SN
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a6SO
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a1_a6SN #)
+[GblId,
+ Arity=3,
+ Str=DmdType <L,1*C1(U(U,U))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta_s9NE
+                                                                                  eta1_s9NF
+                                                                                  eta2_s9NG]
+        let {
+          sat_s9NN [Occ=Once]
+            :: Control.Concurrent.Fiber.Internal.Fiber (b_a6SO -> a3_a6SN)
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[] [s_s9NH]
+                  case eta_s9NE s_s9NH of _ [Occ=Dead] {
+                    (#,#) ipv_s9NJ [Occ=Once] ipv1_s9NK [Occ=OnceL] ->
+                        let {
+                          sat_s9NM [Occ=Once] :: b_a6SO -> a3_a6SN
+                          [LclId, Str=DmdType] =
+                              \r srt:SRT:[] [ds1_s9NL] ipv1_s9NK;
+                        } in  (#,#) [ipv_s9NJ sat_s9NM];
+                  };
+        } in 
+          Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+              sat_s9NN eta1_s9NF eta2_s9NG;
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber_$c<*
+  :: forall a_a5KP b_a5KQ.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5KP
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5KQ
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5KP
+[GblId,
+ Arity=3,
+ Str=DmdType <L,1*C1(U(U,U))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B9 :-> Control.Concurrent.Fiber.Internal.$fApplicative_Fiber1] [eta_B3
+                                                                                  eta_B2
+                                                                                  eta_B1]
+        Control.Concurrent.Fiber.Internal.$fApplicative_Fiber1
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber2
+  :: forall a1_a6SY b_a6SZ.
+     Control.Concurrent.Fiber.Internal.Fiber a1_a6SY
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a6SZ
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, b_a6SZ #)
+[GblId,
+ Arity=3,
+ Str=DmdType <L,1*C1(U(U,A))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [eta_s9NO
+                                                                                  eta1_s9NP
+                                                                                  eta2_s9NQ]
+        let {
+          sat_s9NV [Occ=Once]
+            :: Control.Concurrent.Fiber.Internal.Fiber (b_a6SZ -> b_a6SZ)
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[] [eta3_s9NR]
+                  case eta_s9NO eta3_s9NR of _ [Occ=Dead] {
+                    (#,#) ipv_s9NT [Occ=Once] _ [Occ=Dead] ->
+                        (#,#) [ipv_s9NT GHC.Base.id];
+                  };
+        } in 
+          Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+              sat_s9NV eta1_s9NP eta2_s9NQ;
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber_$c*>
+  :: forall a_a5KE b_a5KF.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5KE
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5KF
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5KF
+[GblId,
+ Arity=3,
+ Str=DmdType <L,1*C1(U(U,A))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9BB :-> Control.Concurrent.Fiber.Internal.$fApplicative_Fiber2] [eta_B3
+                                                                                  eta_B2
+                                                                                  eta_B1]
+        Control.Concurrent.Fiber.Internal.$fApplicative_Fiber2
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fApplicative_Fiber [InlPrag=[ALWAYS] CONLIKE]
+  :: GHC.Base.Applicative Control.Concurrent.Fiber.Internal.Fiber
+[GblId[DFunId], Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS GHC.Base.D:Applicative! [Control.Concurrent.Fiber.Internal.$fFunctor_Fiber
+                                    Control.Concurrent.Fiber.Internal.$fApplicative_Fiber3
+                                    Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+                                    Control.Concurrent.Fiber.Internal.$fApplicative_Fiber2
+                                    Control.Concurrent.Fiber.Internal.$fApplicative_Fiber1];
+a2_r9D6
+  :: forall a1_a6T6.
+     [GHC.Types.Char] -> Control.Concurrent.Fiber.Internal.Fiber a1_a6T6
+[GblId, Arity=1, Str=DmdType <L,U>b, Unf=OtherCon []] =
+    \r srt:SRT:[05 :-> GHC.Err.error] [eta_s9NW]
+        GHC.Err.error eta_s9NW;
+Control.Concurrent.Fiber.Internal.$fMonad_Fiber_$c>> [InlPrag=INLINE (sat-args=2)]
+  :: forall a_a5GF b_a5GG.
+     Control.Concurrent.Fiber.Internal.Fiber a_a5GF
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5GG
+     -> Control.Concurrent.Fiber.Internal.Fiber b_a5GG
+[GblId, Arity=2, Str=DmdType <L,U><L,U>, Unf=OtherCon []] =
+    \r srt:SRT:[r441 :-> Control.Concurrent.Fiber.Internal.$fMonad_Fiber] [eta_s9NX
+                                                                           eta1_s9NY]
+        let {
+          sat_s9O0 [Occ=Once]
+            :: a3_a5GF -> Control.Concurrent.Fiber.Internal.Fiber b_a5GG
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[] [ds_s9NZ] eta1_s9NY;
+        } in 
+          GHC.Base.>>=
+              Control.Concurrent.Fiber.Internal.$fMonad_Fiber eta_s9NX sat_s9O0;
+Control.Concurrent.Fiber.Internal.$fMonad_Fiber [InlPrag=[ALWAYS] CONLIKE,
+                                                 Occ=LoopBreaker!]
+  :: GHC.Base.Monad Control.Concurrent.Fiber.Internal.Fiber
+[GblId[DFunId], Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS GHC.Base.D:Monad! [Control.Concurrent.Fiber.Internal.$fApplicative_Fiber
+                              Control.Concurrent.Fiber.Internal.$fMonad_Fiber1
+                              Control.Concurrent.Fiber.Internal.$fMonad_Fiber_$c>>
+                              Control.Concurrent.Fiber.Internal.$fApplicative_Fiber3
+                              a2_r9D6];
+Control.Concurrent.Fiber.Internal.$fMonadIO_Fiber [InlPrag=[ALWAYS] CONLIKE]
+  :: Control.Monad.IO.Class.MonadIO
+       Control.Concurrent.Fiber.Internal.Fiber
+[GblId[DFunId], Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS Control.Monad.IO.Class.D:MonadIO! [Control.Concurrent.Fiber.Internal.$fMonad_Fiber
+                                              Control.Concurrent.Fiber.Internal.$fMonadIO_Fiber1];
+Control.Concurrent.Fiber.Internal.$fAlternative_Fiber [InlPrag=[ALWAYS] CONLIKE]
+  :: GHC.Base.Alternative Control.Concurrent.Fiber.Internal.Fiber
+[GblId[DFunId], Str=DmdType m, Unf=OtherCon []] =
+    NO_CCS GHC.Base.D:Alternative! [Control.Concurrent.Fiber.Internal.$fApplicative_Fiber
+                                    Control.Concurrent.Fiber.Internal.$fAlternative_Fiber_$cempty
+                                    Control.Concurrent.Fiber.Internal.$fAlternative_Fiber6
+                                    Control.Concurrent.Fiber.Internal.$fAlternative_Fiber5
+                                    Control.Concurrent.Fiber.Internal.$fAlternative_Fiber1];
+Control.Concurrent.Fiber.Internal.$fMonoid_Fiber2
+  :: forall a_a5KY.
+     GHC.Base.Monoid a_a5KY =>
+     Control.Concurrent.Fiber.Internal.Fiber a_a5KY
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5KY
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a5KY #)
+[GblId,
+ Arity=4,
+ Str=DmdType <L,1*U(A,1*C1(U),A)><L,1*C1(U(U,U))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [$dMonoid_s9O1
+                                                                                  x_s9O2
+                                                                                  y_s9O3
+                                                                                  eta_s9O4]
+        let {
+          sat_s9OA [Occ=Once]
+            :: Control.Concurrent.Fiber.Internal.Fiber (a3_a5KY -> a3_a5KY)
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[] [s_s9O5]
+                  case x_s9O2 s_s9O5 of _ [Occ=Dead] {
+                    (#,#) ipv_s9O7 [Occ=Once] ipv1_s9O8 [Occ=Once] ->
+                        let {
+                          sat_s9O9 [Occ=Once] :: a3_a5KY -> a3_a5KY
+                          [LclId, Str=DmdType] =
+                              \u srt:SRT:[] [] GHC.Base.mappend $dMonoid_s9O1 ipv1_s9O8;
+                        } in  (#,#) [ipv_s9O7 sat_s9O9];
+                  };
+        } in 
+          Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+              sat_s9OA y_s9O3 eta_s9O4;
+Control.Concurrent.Fiber.Internal.$fMonoid_Fiber_$cmappend
+  :: forall a_a5KY.
+     GHC.Base.Monoid a_a5KY =>
+     Control.Concurrent.Fiber.Internal.Fiber a_a5KY
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5KY
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5KY
+[GblId,
+ Arity=4,
+ Str=DmdType <L,1*U(A,1*C1(U),A)><L,1*C1(U(U,U))><L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9C5 :-> Control.Concurrent.Fiber.Internal.$fMonoid_Fiber2] [eta_B4
+                                                                             eta_B3
+                                                                             eta_B2
+                                                                             eta_B1]
+        Control.Concurrent.Fiber.Internal.$fMonoid_Fiber2
+            eta_B4 eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fMonoid_Fiber1
+  :: forall a_X5TL.
+     GHC.Base.Monoid a_X5TL =>
+     [Control.Concurrent.Fiber.Internal.Fiber a_X5TL]
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_X5TL #)
+[GblId,
+ Arity=3,
+ Str=DmdType <L,U(U,C(U),A)><S,1*U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [$dMonoid_s9OB
+                                                                                  eta_s9OC
+                                                                                  eta1_s9OD]
+        let {
+          lvl4_s9OE [Occ=OnceL] :: a3_X5TL
+          [LclId, Str=DmdType] =
+              \u srt:SRT:[] [] GHC.Base.mempty $dMonoid_s9OB; } in
+        let {
+          a4_s9OF [Occ=LoopBreaker]
+            :: [Control.Concurrent.Fiber.Internal.Fiber a3_X5TL]
+               -> GHC.Prim.State# GHC.Prim.RealWorld
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, a3_X5TL #)
+          [LclId, Arity=2, Str=DmdType <S,1*U><L,U>, Unf=OtherCon []] =
+              sat-only \r srt:SRT:[r9B0 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3] [ds_s9OG
+                                                                                                     eta2_s9OH]
+                  case ds_s9OG of _ [Occ=Dead] {
+                    [] -> (#,#) [eta2_s9OH lvl4_s9OE];
+                    : y_s9OJ [Occ=Once] ys_s9OK [Occ=Once] ->
+                        let {
+                          sat_s9OR [Occ=Once]
+                            :: Control.Concurrent.Fiber.Internal.Fiber a3_X5TL
+                          [LclId, Str=DmdType] =
+                              \r srt:SRT:[] [eta_B1] a4_s9OF ys_s9OK eta_B1; } in
+                        let {
+                          sat_s9OQ [Occ=Once]
+                            :: Control.Concurrent.Fiber.Internal.Fiber (a3_X5TL -> a3_X5TL)
+                          [LclId, Str=DmdType] =
+                              \r srt:SRT:[] [s_s9OL]
+                                  case y_s9OJ s_s9OL of _ [Occ=Dead] {
+                                    (#,#) ipv_s9ON [Occ=Once] ipv1_s9OO [Occ=Once] ->
+                                        let {
+                                          sat_s9OP [Occ=Once] :: a3_X5TL -> a3_X5TL
+                                          [LclId, Str=DmdType] =
+                                              \u srt:SRT:[] []
+                                                  GHC.Base.mappend $dMonoid_s9OB ipv1_s9OO;
+                                        } in  (#,#) [ipv_s9ON sat_s9OP];
+                                  };
+                        } in 
+                          Control.Concurrent.Fiber.Internal.$fAlternative_Fiber3
+                              sat_s9OQ sat_s9OR eta2_s9OH;
+                  };
+        } in  a4_s9OF eta_s9OC eta1_s9OD;
+Control.Concurrent.Fiber.Internal.$fMonoid_Fiber_$cmconcat
+  :: forall a_a5KY.
+     GHC.Base.Monoid a_a5KY =>
+     [Control.Concurrent.Fiber.Internal.Fiber a_a5KY]
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a5KY
+[GblId,
+ Arity=3,
+ Str=DmdType <L,U(U,C(U),A)><S,1*U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9C3 :-> Control.Concurrent.Fiber.Internal.$fMonoid_Fiber1] [eta_B3
+                                                                             eta_B2
+                                                                             eta_B1]
+        Control.Concurrent.Fiber.Internal.$fMonoid_Fiber1
+            eta_B3 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.$fMonoid_Fiber [InlPrag=[ALWAYS] CONLIKE]
+  :: forall a_a44R.
+     GHC.Base.Monoid a_a44R =>
+     GHC.Base.Monoid (Control.Concurrent.Fiber.Internal.Fiber a_a44R)
+[GblId[DFunId],
+ Arity=1,
+ Str=DmdType <L,U(U,C(U),A)>m,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9C3 :-> Control.Concurrent.Fiber.Internal.$fMonoid_Fiber1,
+                r9C5 :-> Control.Concurrent.Fiber.Internal.$fMonoid_Fiber2] [$dMonoid_s9OS]
+        let {
+          sat_s9OX [Occ=Once]
+            :: [Control.Concurrent.Fiber.Internal.Fiber a3_X5TK]
+               -> Control.Concurrent.Fiber.Internal.Fiber a3_X5TK
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[r9C3 :-> Control.Concurrent.Fiber.Internal.$fMonoid_Fiber1] [eta_B2
+                                                                                       eta_B1]
+                  Control.Concurrent.Fiber.Internal.$fMonoid_Fiber1
+                      $dMonoid_s9OS eta_B2 eta_B1; } in
+        let {
+          sat_s9OW [Occ=Once]
+            :: Control.Concurrent.Fiber.Internal.Fiber a3_X5TK
+               -> Control.Concurrent.Fiber.Internal.Fiber a3_X5TK
+               -> Control.Concurrent.Fiber.Internal.Fiber a3_X5TK
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[r9C5 :-> Control.Concurrent.Fiber.Internal.$fMonoid_Fiber2] [eta_B3
+                                                                                       eta_B2
+                                                                                       eta_B1]
+                  Control.Concurrent.Fiber.Internal.$fMonoid_Fiber2
+                      $dMonoid_s9OS eta_B3 eta_B2 eta_B1; } in
+        let {
+          sat_s9OV [Occ=Once]
+            :: Control.Concurrent.Fiber.Internal.Fiber a3_X5TK
+          [LclId, Str=DmdType] =
+              \r srt:SRT:[] [s_s9OT]
+                  let {
+                    sat_s9OU [Occ=Once] :: a3_X5TK
+                    [LclId, Str=DmdType] =
+                        \u srt:SRT:[] [] GHC.Base.mempty $dMonoid_s9OS;
+                  } in  (#,#) [s_s9OT sat_s9OU];
+        } in  GHC.Base.D:Monoid [sat_s9OV sat_s9OW sat_s9OX];
+Control.Concurrent.Fiber.Internal.forkCont_go [Occ=LoopBreaker]
+  :: forall s_a3Z8.
+     GHC.Prim.Any -> GHC.Prim.State# s_a3Z8 -> GHC.Prim.State# s_a3Z8
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [a3_s9OY s1_s9OZ]
+        case
+            __primcall  eta.fibers.PrimOps.popContStack [s1_s9OZ]
+        of
+        _ [Occ=Dead]
+        { (#,,#) ipv_s9P2 [Occ=Once*]
+                 ipv1_s9P3 [Occ=Once!]
+                 ipv2_s9P4 [Occ=Once] ->
+              case ipv1_s9P3 of _ [Occ=Dead] {
+                __DEFAULT -> ipv_s9P2;
+                1 ->
+                    case ipv2_s9P4 a3_s9OY of fa_s9P6 [Dmd=<S,U>] {
+                      __DEFAULT ->
+                          case
+                              __primcall  eta.fibers.PrimOps.setCurrentC [fa_s9P6 ipv_s9P2]
+                          of
+                          s2_s9P8 [OS=OneShot]
+                          { __DEFAULT ->
+                                case fa_s9P6 s2_s9P8 of _ [Occ=Dead] {
+                                  (#,#) ipv3_s9PA [Occ=Once] ipv4_s9PB [Occ=Once] ->
+                                      Control.Concurrent.Fiber.Internal.forkCont_go
+                                          ipv4_s9PB ipv3_s9PA;
+                                };
+                          };
+                    };
+              };
+        };
+Control.Concurrent.Fiber.Internal.forkCont
+  :: forall a_a5BF.
+     a_a5BF
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, GHC.Prim.ThreadId# #)
+[GblId,
+ Arity=2,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [x_s9PC s_s9PD]
+        case
+            __primcall  eta.fibers.PrimOps.getTSOC [s_s9PD]
+        of
+        _ [Occ=Dead]
+        { (#,#) ipv_s9PG [Occ=Once] ipv1_s9PH [Occ=Once] ->
+              let {
+                sat_s9PV [Occ=Once] :: GHC.Types.IO ()
+                [LclId, Str=DmdType] =
+                    \r srt:SRT:[] [s1_s9PI]
+                        case
+                            __primcall  eta.fibers.PrimOps.setEventC [x_s9PC s1_s9PI]
+                        of
+                        _ [Occ=Dead, OS=OneShot]
+                        { __DEFAULT ->
+                              case
+                                  __primcall  eta.fibers.PrimOps.setConstStackC [ipv1_s9PH s1_s9PI]
+                              of
+                              s3_s9PM [OS=OneShot]
+                              { __DEFAULT ->
+                                    case
+                                        __primcall  eta.fibers.PrimOps.getCurrentC [s3_s9PM]
+                                    of
+                                    _ [Occ=Dead]
+                                    { (#,#) ipv2_s9PP [Occ=Once] ipv3_s9PQ [Occ=Once] ->
+                                          case ipv3_s9PQ ipv2_s9PP of _ [Occ=Dead] {
+                                            (#,#) ipv4_s9PS [Occ=Once] ipv5_s9PT [Occ=Once] ->
+                                                case
+                                                    Control.Concurrent.Fiber.Internal.forkCont_go
+                                                        ipv5_s9PT ipv4_s9PS
+                                                of
+                                                wild_s9PU [OS=OneShot]
+                                                { __DEFAULT -> (#,#) [wild_s9PU GHC.Tuple.()];
+                                                };
+                                          };
+                                    };
+                              };
+                        };
+              } in  fork# [sat_s9PV ipv_s9PG];
+        };
+Control.Concurrent.Fiber.Internal.async1
+  :: forall a_a4WT.
+     GHC.Types.IO a_a4WT
+     -> GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_a4WT #)
+[GblId,
+ Arity=2,
+ Str=DmdType <L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9B1 :-> Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4] [ds_s9PW
+                                                                                  s_s9PX]
+        case
+            __primcall  eta.fibers.PrimOps.getEventCC [s_s9PX]
+        of
+        _ [Occ=Dead]
+        { (#,,#) ipv_s9Q0 [Occ=Once*]
+                 ipv1_s9Q1 [Occ=Once!]
+                 ipv2_s9Q2 [Occ=Once] ->
+              case ipv1_s9Q1 of _ [Occ=Dead] {
+                __DEFAULT ->
+                    case
+                        __primcall  eta.fibers.PrimOps.delEventCC [ipv_s9Q0]
+                    of
+                    s3_s9Q5 [OS=OneShot]
+                    { __DEFAULT -> (#,#) [s3_s9Q5 ipv2_s9Q2];
+                    };
+                0 ->
+                    case ds_s9PW ipv_s9Q0 of _ [Occ=Dead] {
+                      (#,#) ipv3_s9Q7 [Occ=Once] ipv4_s9Q8 [Occ=Once] ->
+                          case
+                              Control.Concurrent.Fiber.Internal.forkCont ipv4_s9Q8 ipv3_s9Q7
+                          of
+                          _ [Occ=Dead]
+                          { (#,#) ipv5_s9QA [Occ=Once] _ [Occ=Dead] ->
+                                raiseIO# [Control.Concurrent.Fiber.Internal.$fAlternative_Fiber4
+                                          ipv5_s9QA];
+                          };
+                    };
+              };
+        };
+Control.Concurrent.Fiber.Internal.async
+  :: forall a_a3NB.
+     GHC.Types.IO a_a3NB
+     -> Control.Concurrent.Fiber.Internal.Fiber a_a3NB
+[GblId,
+ Arity=2,
+ Str=DmdType <L,1*C1(U(U,U))><L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[r9CM :-> Control.Concurrent.Fiber.Internal.async1] [eta_B2
+                                                                    eta_B1]
+        Control.Concurrent.Fiber.Internal.async1 eta_B2 eta_B1;
+Control.Concurrent.Fiber.Internal.resumeFiber1
+  :: GHC.Prim.State# GHC.Prim.RealWorld
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [s_s9QC]
+        case
+            __primcall  eta.fibers.PrimOps.getCurrentC [s_s9QC]
+        of
+        _ [Occ=Dead]
+        { (#,#) ipv_s9QF [Occ=Once] ipv1_s9QG [Occ=Once] ->
+              case ipv1_s9QG ipv_s9QF of _ [Occ=Dead] {
+                (#,#) ipv2_s9QI [Occ=Once] ipv3_s9QJ [Occ=Once] ->
+                    case
+                        Control.Concurrent.Fiber.Internal.forkCont_go ipv3_s9QJ ipv2_s9QI
+                    of
+                    wild_s9QK [OS=OneShot]
+                    { __DEFAULT -> (#,#) [wild_s9QK GHC.Tuple.()];
+                    };
+              };
+        };
+Control.Concurrent.Fiber.Internal.resumeFiber
+  :: Control.Concurrent.Fiber.Internal.Fiber ()
+[GblId,
+ Arity=1,
+ Caf=NoCafRefs,
+ Str=DmdType <L,U>,
+ Unf=OtherCon []] =
+    \r srt:SRT:[] [eta_B1]
+        Control.Concurrent.Fiber.Internal.resumeFiber1 eta_B1;
+Control.Concurrent.Fiber.Internal.Empty
+  :: Control.Concurrent.Fiber.Internal.Empty
+[GblId[DataCon], Caf=NoCafRefs, Str=DmdType, Unf=OtherCon []] =
+    NO_CCS Control.Concurrent.Fiber.Internal.Empty! [];
+
