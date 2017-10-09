@@ -11,8 +11,10 @@ import Control.Exception
 import Control.Monad.IO.Class
 import Data.Monoid hiding (Any)
 import Java.Core
-
+import Data.IORef
 -- Fiber
+import Debug.Trace 
+(!>) x y= trace (show y) x
 
 newtype Fiber a = Fiber { unFiber :: State# RealWorld -> (# State# RealWorld, a #) }
 
@@ -25,12 +27,13 @@ instance Exception Empty
   
 instance Alternative Fiber where
   empty= throw Empty
-  Fiber mf <|> Fiber mg=  Fiber $ mf `catch#` \Empty -> mg
+  Fiber mf <|> Fiber mg= Fiber $ \s -> case topStack#  s of
+    (# s1, top, current #)  -> catch# mf (mg' top current) s1
+    where
+    mg' top current Empty s = case setTopStack# top current s of
+        s1 -> mg s1 
+    
 
-catchf :: Exception e => Fiber a -> (e -> Fiber a) -> Fiber a
-catchf (Fiber exp)  exc=  
-    case IO exp `catch` (\e -> case exc e  of  Fiber r -> IO r) of
-        (IO r) -> Fiber r
 
 instance Monoid a => Monoid (Fiber a) where
   mempty= return mempty
@@ -39,34 +42,50 @@ instance Monoid a => Monoid (Fiber a) where
 instance Applicative Fiber where
   pure = return
   -- (<*>) = ap
-  Fiber mf <*> Fiber mx = Fiber $ \s ->  
-    case newMutVar# Nothing s  of
-      (# s1, r1 #) -> case newMutVar# Nothing s1 of
-        (# s2, r2 #)  -> 
-          catch# (fparallel r1 r2 )     ( xparallel r1 r2 ) s2
-  
-      --   (State# RealWorld -> (# State# RealWorld, a #) )
-      --  -> (b -> State# RealWorld -> (# State# RealWorld, a #) )
-      --  -> State# RealWorld
-      --  -> (# State# RealWorld, a #)
+  mf <*> mx = do 
+    r1 <- liftIO $ newIORef Nothing
+    r2 <- liftIO $ newIORef Nothing
+    fparallel r1 r2 <|>  xparallel r1 r2 
     where
+    fparallel r1 r2= do 
+      f <- mf !> "mf"
+      liftIO $ (writeIORef r1 $ Just f) !> "11"
+      mx <- liftIO (readIORef r2)  !> "12"
+      case mx of 
+        Nothing -> empty  !> "empty1"
+        Just x  -> return $ f x 
+
+    xparallel r1 r2 = do 
+      x <- mx  !> "mx"
+      liftIO $ (writeIORef r2 $ Just x)  !> "21"
+      mf <- liftIO (readIORef r1)   !> "22"
+      case mf of
+        Nothing -> empty !> "empty2"
+        Just f -> return $ f x
+
+  -- Fiber mf <*> Fiber mx = Fiber $ \s ->  
+  --   case newMutVar# Nothing s  of
+  --     (# s1, r1 #) -> case newMutVar# Nothing s1 of
+  --       (# s2, r2 #)  ->  case topStack#  s2 of
+  --         (# s3, top #)  ->  catch# (fparallel r1 r2  )     ( xparallel r1 r2 top ) s3
+  
+  --   where
     
-    fparallel r1 r2 s=
-        case mf s of
-          (# s3, f #)  ->  case writeMutVar# r1  (Just f) s3  of
-            s4#  -> case readMutVar# r2   s4#  of
-              (# s5,mx #)  -> case mx of
-                Just x  -> (# s5, f x #)
-                Nothing -> raiseIO# (toException Empty) s5
+  --   fparallel r1 r2 s=  case mf s of
+  --         (# s3, f #)  ->  case writeMutVar# r1 (Just f) s3  of
+  --           s4#  -> case readMutVar# r2   s4#  of
+  --             (# s5,mx #)  -> case mx of
+  --               Just x  -> (# s5, f x #)
+  --               Nothing -> raiseIO# (toException Empty) s5
                 
     
-    xparallel  r1 r2  (_ :: Empty) s=
-        case mx s of
-          (# s3, x #)  ->  case writeMutVar# r2 (Just x)  s3  of
-            s4#  -> case readMutVar# r1   s4#  of
-              (# s5,mf #)  -> case mf of
-                Just f  -> (# s5, f x #)
-                Nothing -> raiseIO# (toException Empty) s5
+  --   xparallel  r1 r2 top (_ :: Empty) s=  case mx s of
+  --         (# s3, x #)  ->  case writeMutVar# r2 (Just x)  s3  of
+  --           s4#  -> case readMutVar# r1   s4#  of
+  --             (# s5,mf #)  -> case mf of
+  --               Just f  -> (# s5, f x #)
+  --               Nothing -> case setTopStack# top s5 of
+  --                 s6 -> raiseIO# (toException Empty) s6
                 
 
 
@@ -115,26 +134,58 @@ resumeFiber = Fiber $ \s ->
                      (# s3, a' #) -> go a' s3
             (# s1, _, _ #) -> s1
 
-
-
 async :: IO a -> Fiber a 
-async (IO io)=  Fiber $ \s -> io' s
-        where
-        unFiber (Fiber fib)= fib
-        io' s =  case getEvent# s  of
-          (# s2,0#, _ #) -> case io s2 of
-                (# s3, x #) ->   case forkCont x s3  of
-                    (# s5, _ #) ->  raiseIO# (toException Empty) s5
-          
-          (# s2, _, x #) -> case delEvent#  s2 of 
-                      s3 -> (# s3, x #)
+async io= liftIO $ do 
+    mev <- getEvent 
+    case mev of
 
-forkCont x= \s -> case getTSO# s of (#s1, tso #) -> fork# (execCont tso) s1
-  where
-  execCont tso =IO $ \s -> case setEvent#  (unsafeCoerce  x) s of
-       s1 ->  case setContStack# tso s of s2 -> (unFiber resumeFiber) s2
-  unFiber (Fiber fib)= fib
+      Nothing -> do 
+                forkCont io
+                throw Empty
+
+      Just ev -> do 
+            delEvent
+            return ev
+    
+     where
+     forkCont io= do
+        cont <- getTSO
+        forkIO $ do
+            ev <- io
+            setEvent ev 
+            setTSO cont   !> "setTSO"
+            unlift resumeFiber   !> "resumeFiber"
+            return ()  !> "return"
+          `catch` \Empty -> return ()
+            
+        return()
+      
+     unlift (Fiber fib)= IO fib
+     getTSO= IO $ \s -> case getTSO# s of (# s1, th #) -> (#s1, ThreadId th #)
+     setTSO (ThreadId tso)  = IO $ \s -> case setContStack# tso  s of s2 ->  (# s2, () #)
+       
+
+async1 :: IO a -> Fiber a 
+async1 (IO io)=  Fiber $ \s -> io' s
+    where
+    unFiber (Fiber fib)= fib
+    io' s =  case getEvent# s  of
+      (# s2, 0#, _ #) -> case forkCont s2  of
+                (# s5, _ #) ->  raiseIO# (toException Empty) s5
+      
+      (# s2, _, x #) -> case delEvent#  s2 of 
+                  s3 -> (# s3, x #)
   
+    forkCont = \s ->   case getTSO# s of (#s2, tso #) -> fork# (execCont tso) s2
+      where   
+      execCont tso  =IO $ \s -> case io s of
+        (# s1, x #) ->  case setEvent#  (unsafeCoerce  x) s1 of
+           s2 ->  case setContStack# tso s1 of s2 -> catch#  resumeFiber1 processEmpty s2
+
+      unFiber (Fiber fib)= fib
+      processEmpty :: Empty -> State# RealWorld -> (# State# RealWorld, () #)
+      processEmpty Empty s= (# s, () #)
+      resumeFiber1 s=  case unFiber resumeFiber s of (# s1, _ #) -> (# s1, () #)  
             
 
 yield :: Fiber a
@@ -159,19 +210,28 @@ yield' block = Fiber $ \s ->
         unreachableCodeError =
           error "This code should not have been reached."
 
-forkFiber :: Fiber () -> IO ThreadId
-forkFiber (Fiber m)= IO $ \s ->
-  case fork# m s of (# s1, tid #) -> (# s1, ThreadId tid #)
+forkFiber x= forkFiber'  x `catch` \Empty ->  myThreadId
+  where
+  forkFiber' :: Fiber () -> IO ThreadId
+  forkFiber' (Fiber m)= IO $ \s ->
+    case fork# m s of (# s1, tid #) -> (# s1, ThreadId tid #)
 
-setEvent x= Fiber $ \s -> case setEvent# (unsafeCoerce  x) s of s1 -> (#s1 , () #)
 
-getEvent :: Fiber (Maybe a)
-getEvent = Fiber $ \s -> case getEvent#  s of
+setEvent x= IO $ \s -> case setEvent# (unsafeCoerce  x) s of s1 -> (#s1 , () #)
+
+getEvent :: IO (Maybe a)
+getEvent = IO $ \s -> case getEvent#  s of
       (# s1, 1# , x #) -> (#s1, Just $ unsafeCoerce x #)
       (# s1,  _ , _ #) -> (#s1, Nothing #)
 
-delEvent= Fiber $ \s -> case delEvent# s of  s1->  (# s1,() #)
+delEvent= IO $ \s -> case delEvent# s of  s1->  (# s1,() #)
 
+
+catchf :: Exception e => Fiber a -> (e -> Fiber a) -> Fiber a
+catchf (Fiber exp)  exc=  
+    case IO exp `catch` (\e -> case exc e  of  Fiber r -> IO r) of
+        (IO r) -> Fiber r
+        
 -- Runtime primitives
 
 data {-# CLASS "java.util.Stack" #-} Stack
@@ -208,5 +268,14 @@ foreign import prim "eta.fibers.PrimOps.delEventCC"
 foreign import prim "eta.fibers.PrimOps.getTSOC"
    getTSO# ::  State# s -> (# State# s, ThreadId# #)
 
-foreign import prim "eta.fibers.PrimOps.setConstStackC"
-   setContStack# ::  ThreadId# -> State# s  -> State# s
+foreign import prim "eta.fibers.PrimOps.setConstStackCC"
+   setContStack# ::  ThreadId#  -> State# s  -> State# s
+
+-- foreign import prim "eta.fibers.PrimOps.traceC"
+--    trace# ::  String -> State# s  -> State# s
+
+foreign import prim "eta.fibers.PrimOps.topStackCC"
+   topStack# ::  State# s  -> (#State# s, Int#, Any #)
+
+foreign import prim "eta.fibers.PrimOps.setTopStackC"
+   setTopStack# ::  Int# -> Any -> State# s  -> State# s

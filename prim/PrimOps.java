@@ -27,20 +27,46 @@ public class PrimOps {
 
     public static IdentityHashMap<TSO,Closure> tsoEvent = new IdentityHashMap<TSO,Closure>();
 
+    // public static Closure alternativeFiber(StgContext context, Closure fa, Closure fb) {
+    //     TSO tso = context.currentTSO;
+    //     int oldTop = tso.contStackTop;
+    //     try {
+    //         return fa.applyV(context);
+    //     } catch (EmptyException e) {
+    //         tso.contStackTop = oldTop;
+    //         return fb.applyV(context);
+    //     }
+    // }
+
+    public static Closure topStackCC(StgContext context){
+        context.I1 =  context.currentTSO.contStackTop;
+        return context.currentTSO.currentCont;
+    }
+
+    public static void setTopStackC(StgContext context,int top, Closure cl){
+        context.currentTSO.contStackTop= top;
+        context.currentTSO.currentCont= cl;
+    }
+
+
     public static TSO getTSOC(StgContext context) {
         return context.currentTSO;
     }
 
-    public static void setConstStackC(StgContext context, TSO tso){ 
+    public static void setConstStackCC(StgContext context, TSO tso){ 
         Closure[] newContStack = new Closure[tso.contStackTop];
-        context.currentTSO.contStackTop= tso.contStackTop;
-        System.arraycopy(tso.contStack,0,newContStack,0,tso.contStackTop );
+        System.arraycopy(tso.contStack,0,newContStack,0, tso.contStackTop);
         context.currentTSO.contStack= newContStack;
+        context.currentTSO.contStackTop= tso.contStackTop;
+        context.currentTSO.currentCont = tso.currentCont;
+
     }
     
     public static Closure getEventCC(StgContext context){
         Closure v= tsoEvent.get(context.currentTSO);
         System.out.println("getEvent");
+        System.out.println(v);
+
         if (v==null)  context.I1 = 0; else context.I1 = 1;
         return v;
     }
@@ -94,7 +120,6 @@ public class PrimOps {
             System.exit(1);
         }
     }
-
     public static void yieldFiber(StgContext context, int block) {
         TSO tso = context.currentTSO;
         tso.whatNext = (block == 1)? ThreadBlock : ThreadYield;
