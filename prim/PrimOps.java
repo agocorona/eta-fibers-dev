@@ -16,6 +16,7 @@ import eta.runtime.stg.TSO;
 import eta.runtime.concurrent.Concurrent;
 import eta.runtime.concurrent.Fiber;
 import eta.runtime.concurrent.MVar;
+//import eta.runtime.exception;
 
 import static ghc_prim.ghc.Types.*;
 import static eta.runtime.stg.TSO.WhatNext.*;
@@ -23,29 +24,45 @@ import static eta.runtime.stg.Closures.*;
 
 /* TODO: Provide cleanup operations by extending the runtime with hooks. */
 
+
 public class PrimOps {
+    public static class EmptyException extends eta.runtime.exception.StgException {}
+    public static final EmptyException EMPTYEXCEPTION= new EmptyException();
 
     public static IdentityHashMap<TSO,Closure> tsoEvent = new IdentityHashMap<TSO,Closure>();
-
-    // public static Closure alternativeFiber(StgContext context, Closure fa, Closure fb) {
-    //     TSO tso = context.currentTSO;
-    //     int oldTop = tso.contStackTop;
-    //     try {
-    //         return fa.applyV(context);
-    //     } catch (EmptyException e) {
-    //         tso.contStackTop = oldTop;
-    //         return fb.applyV(context);
-    //     }
-    // }
-
-    public static Closure topStackCC(StgContext context){
-        context.I1 =  context.currentTSO.contStackTop;
-        return context.currentTSO.currentCont;
+    public static void throwEmpty(StgContext context){
+        throw EMPTYEXCEPTION;
+    }
+    public static Closure alternativeFiber(StgContext context, Closure fa, Closure fb) {
+        TSO tso = context.currentTSO;
+        int oldTop = tso.contStackTop;
+        try {
+            return fa.applyV(context);
+        } catch (EmptyException e) {
+            tso.contStackTop = oldTop;
+               tso.currentCont= fb;
+            return fb.applyV(context);
+        }
     }
 
-    public static void setTopStackC(StgContext context,int top, Closure cl){
+    
+
+    public static int topStackC(StgContext context){
+        return context.currentTSO.contStackTop;
+
+    }
+
+
+
+    public static Closure[] getStack(StgContext context){
+        Closure[] newContStack = new Closure[context.currentTSO.contStackTop];
+        System.arraycopy(context.currentTSO.contStack,0,newContStack,0, context.currentTSO.contStackTop);
+        return newContStack;
+    }
+
+
+    public static void setTopStackC(StgContext context,int top){
         context.currentTSO.contStackTop= top;
-        context.currentTSO.currentCont= cl;
     }
 
 
@@ -53,12 +70,10 @@ public class PrimOps {
         return context.currentTSO;
     }
 
-    public static void setConstStackCC(StgContext context, TSO tso){ 
-        Closure[] newContStack = new Closure[tso.contStackTop];
-        System.arraycopy(tso.contStack,0,newContStack,0, tso.contStackTop);
+    public static void setConstStackCC(StgContext context, int top, Closure[] newContStack,Closure current){ 
         context.currentTSO.contStack= newContStack;
-        context.currentTSO.contStackTop= tso.contStackTop;
-        context.currentTSO.currentCont = tso.currentCont;
+        context.currentTSO.contStackTop= top;
+        context.currentTSO.currentCont = current;
 
     }
     

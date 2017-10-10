@@ -18,19 +18,17 @@ import Control.Exception (throw)
 
 --main :: IO ()
 main = do
-  forkFiber $ do 
-     r2  <- empty <|> async (return " world2")
-     th2 <- liftIO  myThreadId !> "MYTHREAD"
-     liftIO $ print (r2,th2)
-
-   `catchf` \Empty -> liftIO $ print "CATCHED EMPTY"
-  threadDelay 2000000
-   -- return ()
-return1 s= threadDelay 1000 >> return s
-
-evExit= unsafePerformIO $ MVar.newEmptyMVar
+  
+  keep $ do 
+     r <- empty <|>  async ( liftIO (threadDelay 1000000) >>return " world") 
+     --th2 <- liftIO  myThreadId !> "MYTHREAD"
+     liftIO $ print r
 
 
+mexit= unsafePerformIO $ MVar.newEmptyMVar  
+keep mx= do
+     forkFiber $ (mx  >> return ())  <|>  return ()
+     MVar.takeMVar mexit   
    -- pingChan <- newEmptyMVar
 -- pongChan <- newEmptyMVar
 -- forkFiber $ pingpong "Ping" pingChan pongChan
