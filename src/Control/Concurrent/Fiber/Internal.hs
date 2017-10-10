@@ -14,7 +14,7 @@ import Java.Core
 import Data.IORef
 -- Fiber
 import Debug.Trace 
-(!>) x y= trace (show y) x
+-- (!>) x y= trace (show y) x
 
 
 newtype Fiber a = Fiber { unFiber :: State# RealWorld -> (# State# RealWorld, a #) }
@@ -52,19 +52,19 @@ instance Applicative Fiber where
     fparallel r1 r2 <|>  xparallel r1 r2 
     where
     fparallel r1 r2= do 
-      f <- mf !> "mf"
-      liftIO $ (writeIORef r1 $ Just f) !> "11"
-      mx <- liftIO (readIORef r2)  !> "12"
+      f <- mf 
+      liftIO $ (writeIORef r1 $ Just f) 
+      mx <- liftIO (readIORef r2) 
       case mx of 
-        Nothing -> empty  !> "empty1"
+        Nothing -> empty 
         Just x  -> return $ f x 
 
     xparallel r1 r2 = do 
-      x <- mx  !> "mx"
-      liftIO $ (writeIORef r2 $ Just x)  !> "21"
-      mf <- liftIO (readIORef r1)   !> "22"
+      x <- mx 
+      liftIO $ (writeIORef r2 $ Just x)
+      mf <- liftIO (readIORef r1)
       case mf of
-        Nothing -> empty !> "empty2"
+        Nothing -> empty 
         Just f -> return $ f x
 
   -- Fiber mf <*> Fiber mx = Fiber $ \s ->  
@@ -145,8 +145,7 @@ async io= liftIO $ do
 
       Nothing -> do 
                 forkCont io
-                throwEmpty  !> "throw empty"
-
+                throwEmpty 
       Just ev -> do 
             delEvent
             return ev
@@ -154,25 +153,26 @@ async io= liftIO $ do
      where
      forkCont io= do
         I# top <- topStack
-        Object# stack <- getStack
+        Obj stack <- getStack
         curr  <- getCurrent
         forkIO' $ do
-          setTSO  top   stack curr  !> "setTSO"
+          setTSO  top   stack curr 
           ev <- io
           setEvent ev 
           
-          unlift resumeFiber   !> "resumeFiber"
-          liftIO $ print "resumeFiber end"
-          return ()  !> "return"
+          unlift resumeFiber  
+          return () 
          `catchEmpty`  return ()
             
         return()
      
      forkIO' (IO mx)= IO $ \s -> case fork# mx s of  (# s1, tid #) -> (# s1, ThreadId tid #)
      topStack= IO $ \s -> case topStack# s of (#s1, i #) -> (# s1, I# i #)  
-     getStack= IO $ \s ->    getStack# s -- of (#s1, Object# arr #) -> (#s1, arr #) 
+     getStack= IO $ \s -> case getStack# s of (#s1, arr #) -> (#s1, Obj arr #) 
      getCurrent= IO $ \s -> getCurrentC# s
      setTSO   top stack current  = IO $ \s -> case setContStack# top stack current  s of s2 ->  (# s2, () #)
+
+data Obj = Obj (Object# Object)
 
 unlift (Fiber fib)= IO fib
      
@@ -278,7 +278,7 @@ foreign import prim "eta.fibers.PrimOps.delEventCC"
 foreign import prim "eta.fibers.PrimOps.getTSOC"
    getTSO# ::  State# s -> (# State# s, ThreadId# #)
 
-foreign import prim "eta.fibers.PrimOps.setConstStackCC"
+foreign import prim "eta.fibers.PrimOps.setContStack"
    setContStack# ::  Int# -> Object# Object -> Any -> State# s  -> State# s
 
 -- foreign import prim "eta.fibers.PrimOps.traceC"
@@ -287,7 +287,7 @@ foreign import prim "eta.fibers.PrimOps.setConstStackCC"
 foreign import prim "eta.fibers.PrimOps.topStackC"
    topStack# ::  State# s  -> (#State# s, Int# #)
 
-foreign import prim "eta.fibers.PrimOps.getStack"
+foreign import prim "eta.fibers.PrimOps.getStackC"
    getStack# ::  State# s  -> (#State# s,  Object# Object #)
 
 

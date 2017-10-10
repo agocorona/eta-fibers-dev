@@ -1,116 +1,116 @@
 
 ==================== STG syntax: ====================
-2017-10-10 16:59:37.824318 UTC
+2017-10-10 22:11:36.950481 UTC
 
 Control.Concurrent.Fiber.MVar.$wa [InlPrag=[0]]
-  :: forall a_aDUI.
-     GHC.Prim.MVar# GHC.Prim.RealWorld a_aDUI
-     -> a_aDUI
+  :: forall a_aCNY.
+     GHC.Prim.MVar# GHC.Prim.RealWorld a_aCNY
+     -> a_aCNY
      -> GHC.Prim.State# GHC.Prim.RealWorld
      -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
 [GblId, Arity=3, Str=DmdType <L,U><L,U><L,U>, Unf=OtherCon []] =
     \r srt:SRT:[rI :-> Control.Concurrent.Fiber.Internal.block3,
-                rJ :-> Control.Concurrent.Fiber.Internal.block1] [ww_sE8U
-                                                                  w_sE8V
-                                                                  w1_sE8W]
+                rK :-> Control.Concurrent.Fiber.Internal.block1] [ww_sD2A
+                                                                  w_sD2B
+                                                                  w1_sD2C]
         let {
-          a1_sE8X [Occ=LoopBreaker]
+          a1_sD2D [Occ=LoopBreaker]
             :: GHC.Prim.State# GHC.Prim.RealWorld
                -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
           [LclId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
               \r srt:SRT:[rI :-> Control.Concurrent.Fiber.Internal.block3,
-                          rJ :-> Control.Concurrent.Fiber.Internal.block1] [s_sE8Y]
-                  case tryPutMVar# [ww_sE8U w_sE8V s_sE8Y] of _ [Occ=Dead] {
-                    (#,#) ipv_sE90 [Occ=Once*] ipv1_sE91 [Occ=Once!] ->
-                        case ipv1_sE91 of _ [Occ=Dead] {
+                          rK :-> Control.Concurrent.Fiber.Internal.block1] [s_sD2E]
+                  case tryPutMVar# [ww_sD2A w_sD2B s_sD2E] of _ [Occ=Dead] {
+                    (#,#) ipv_sD2G [Occ=Once*] ipv1_sD2H [Occ=Once!] ->
+                        case ipv1_sD2H of _ [Occ=Dead] {
                           __DEFAULT ->
                               case
-                                  __primcall  eta.fibers.PrimOps.awakenMVarListeners [ww_sE8U
-                                                                                      ipv_sE90]
+                                  __primcall  eta.fibers.PrimOps.awakenMVarListeners [ww_sD2A
+                                                                                      ipv_sD2G]
                               of
-                              s''_sE94 [OS=OneShot]
-                              { __DEFAULT -> (#,#) [s''_sE94 GHC.Tuple.()];
+                              s''_sD2K [OS=OneShot]
+                              { __DEFAULT -> (#,#) [s''_sD2K GHC.Tuple.()];
                               };
                           0 ->
                               case
-                                  __primcall  eta.fibers.PrimOps.addMVarListener [ww_sE8U ipv_sE90]
+                                  __primcall  eta.fibers.PrimOps.addMVarListener [ww_sD2A ipv_sD2G]
                               of
-                              s''_sE96 [OS=OneShot]
+                              s''_sD2M [OS=OneShot]
                               { __DEFAULT ->
                                     case
                                         __primcall  eta.fibers.PrimOps.setCurrentC [Control.Concurrent.Fiber.Internal.block1
-                                                                                    s''_sE96]
+                                                                                    s''_sD2M]
                                     of
-                                    s1_sE98 [OS=OneShot]
+                                    s1_sD2O [OS=OneShot]
                                     { __DEFAULT ->
                                           let {
-                                            sat_sE9C [Occ=Once] :: GHC.Prim.Any
+                                            sat_sD2S [Occ=Once] :: GHC.Prim.Any
                                             [LclId, Str=DmdType] =
-                                                \r srt:SRT:[] [ds2_sE9A eta_sE9B] a1_sE8X eta_sE9B;
+                                                \r srt:SRT:[] [ds2_sD2Q eta_sD2R] a1_sD2D eta_sD2R;
                                           } in 
                                             case
-                                                __primcall  eta.fibers.PrimOps.pushNextC [sat_sE9C
-                                                                                          s1_sE98]
+                                                __primcall  eta.fibers.PrimOps.pushNextC [sat_sD2S
+                                                                                          s1_sD2O]
                                             of
-                                            s2_sE9D [OS=OneShot]
+                                            s2_sD2T [OS=OneShot]
                                             { __DEFAULT ->
                                                   case
-                                                      __primcall  eta.fibers.PrimOps.popContStack [s2_sE9D]
+                                                      __primcall  eta.fibers.PrimOps.popContStack [s2_sD2T]
                                                   of
                                                   _ [Occ=Dead]
-                                                  { (#,,#) ipv2_sE9G [Occ=Once*]
-                                                           ipv3_sE9H [Occ=Once!]
-                                                           ipv4_sE9I [Occ=Once] ->
-                                                        case ipv3_sE9H of _ [Occ=Dead] {
+                                                  { (#,,#) ipv2_sD2W [Occ=Once*]
+                                                           ipv3_sD2X [Occ=Once!]
+                                                           ipv4_sD2Y [Occ=Once] ->
+                                                        case ipv3_sD2X of _ [Occ=Dead] {
                                                           __DEFAULT ->
                                                               case
-                                                                  __primcall  eta.fibers.PrimOps.popNextC [ipv2_sE9G]
+                                                                  __primcall  eta.fibers.PrimOps.popNextC [ipv2_sD2W]
                                                               of
                                                               _ [Occ=Dead]
-                                                              { (#,#) ipv5_sE9M [Occ=Once]
+                                                              { (#,#) ipv5_sD32 [Occ=Once]
                                                                       _ [Occ=Dead] ->
                                                                     case
-                                                                        __primcall  eta.fibers.PrimOps.setCurrentC [a1_sE8X
-                                                                                                                    ipv5_sE9M]
+                                                                        __primcall  eta.fibers.PrimOps.setCurrentC [a1_sD2D
+                                                                                                                    ipv5_sD32]
                                                                     of
-                                                                    s5_sE9P [OS=OneShot]
-                                                                    { __DEFAULT -> a1_sE8X s5_sE9P;
+                                                                    s5_sD35 [OS=OneShot]
+                                                                    { __DEFAULT -> a1_sD2D s5_sD35;
                                                                     };
                                                               };
                                                           1 ->
                                                               let {
-                                                                sat_sE9R [Occ=Once] :: GHC.Prim.Any
+                                                                sat_sD37 [Occ=Once] :: GHC.Prim.Any
                                                                 [LclId, Str=DmdType] =
                                                                     \u srt:SRT:[rI :-> Control.Concurrent.Fiber.Internal.block3] []
-                                                                        ipv4_sE9I
+                                                                        ipv4_sD2Y
                                                                             Control.Concurrent.Fiber.Internal.block3;
                                                               } in 
                                                                 case
-                                                                    __primcall  eta.fibers.PrimOps.setCurrentC [sat_sE9R
-                                                                                                                ipv2_sE9G]
+                                                                    __primcall  eta.fibers.PrimOps.setCurrentC [sat_sD37
+                                                                                                                ipv2_sD2W]
                                                                 of
-                                                                s4_sE9S [OS=OneShot]
+                                                                s4_sD38 [OS=OneShot]
                                                                 { __DEFAULT ->
                                                                       case
                                                                           __primcall  eta.fibers.PrimOps.yieldFiber [1
-                                                                                                                     s4_sE9S]
+                                                                                                                     s4_sD38]
                                                                       of
-                                                                      wild_sE9U [OS=OneShot]
+                                                                      wild_sD3A [OS=OneShot]
                                                                       { __DEFAULT ->
                                                                             case
-                                                                                __primcall  eta.fibers.PrimOps.popNextC [wild_sE9U]
+                                                                                __primcall  eta.fibers.PrimOps.popNextC [wild_sD3A]
                                                                             of
                                                                             _ [Occ=Dead]
-                                                                            { (#,#) ipv5_sE9X [Occ=Once]
+                                                                            { (#,#) ipv5_sD3D [Occ=Once]
                                                                                     _ [Occ=Dead] ->
                                                                                   case
-                                                                                      __primcall  eta.fibers.PrimOps.setCurrentC [a1_sE8X
-                                                                                                                                  ipv5_sE9X]
+                                                                                      __primcall  eta.fibers.PrimOps.setCurrentC [a1_sD2D
+                                                                                                                                  ipv5_sD3D]
                                                                                   of
-                                                                                  s5_sEA0 [OS=OneShot]
+                                                                                  s5_sD3G [OS=OneShot]
                                                                                   { __DEFAULT ->
-                                                                                        a1_sE8X
-                                                                                            s5_sEA0;
+                                                                                        a1_sD2D
+                                                                                            s5_sD3G;
                                                                                   };
                                                                             };
                                                                       };
@@ -122,144 +122,144 @@ Control.Concurrent.Fiber.MVar.$wa [InlPrag=[0]]
                               };
                         };
                   };
-        } in  a1_sE8X w1_sE8W;
+        } in  a1_sD2D w1_sD2C;
 Control.Concurrent.Fiber.MVar.putMVar1 [InlPrag=INLINE[0]]
-  :: forall a_aDUI.
-     GHC.MVar.MVar a_aDUI
-     -> a_aDUI
+  :: forall a_aCNY.
+     GHC.MVar.MVar a_aCNY
+     -> a_aCNY
      -> GHC.Prim.State# GHC.Prim.RealWorld
      -> (# GHC.Prim.State# GHC.Prim.RealWorld, () #)
 [GblId,
  Arity=3,
  Str=DmdType <S,1*U(U)><L,U><L,U>,
  Unf=OtherCon []] =
-    \r srt:SRT:[rDRL :-> Control.Concurrent.Fiber.MVar.$wa] [w_sEA1
-                                                             w1_sEA2
-                                                             w2_sEA3]
-        case w_sEA1 of _ [Occ=Dead] {
-          GHC.MVar.MVar ww1_sEA5 [Occ=Once] ->
-              Control.Concurrent.Fiber.MVar.$wa ww1_sEA5 w1_sEA2 w2_sEA3;
+    \r srt:SRT:[rCL0 :-> Control.Concurrent.Fiber.MVar.$wa] [w_sD3H
+                                                             w1_sD3I
+                                                             w2_sD3J]
+        case w_sD3H of _ [Occ=Dead] {
+          GHC.MVar.MVar ww1_sD3L [Occ=Once] ->
+              Control.Concurrent.Fiber.MVar.$wa ww1_sD3L w1_sD3I w2_sD3J;
         };
 Control.Concurrent.Fiber.MVar.putMVar
-  :: forall a_aDSV.
-     GHC.MVar.MVar a_aDSV
-     -> a_aDSV -> Control.Concurrent.Fiber.Internal.Fiber ()
+  :: forall a_aCMB.
+     GHC.MVar.MVar a_aCMB
+     -> a_aCMB -> Control.Concurrent.Fiber.Internal.Fiber ()
 [GblId,
  Arity=3,
  Str=DmdType <S,1*U(U)><L,U><L,U>,
  Unf=OtherCon []] =
-    \r srt:SRT:[rDRM :-> Control.Concurrent.Fiber.MVar.putMVar1] [eta_B3
+    \r srt:SRT:[rCL1 :-> Control.Concurrent.Fiber.MVar.putMVar1] [eta_B3
                                                                   eta_B2
                                                                   eta_B1]
         Control.Concurrent.Fiber.MVar.putMVar1 eta_B3 eta_B2 eta_B1;
 Control.Concurrent.Fiber.MVar.$wa1 [InlPrag=[0]]
-  :: forall a_aDUR.
-     GHC.Prim.MVar# GHC.Prim.RealWorld a_aDUR
+  :: forall a_aCO7.
+     GHC.Prim.MVar# GHC.Prim.RealWorld a_aCO7
      -> GHC.Prim.State# GHC.Prim.RealWorld
-     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_aDUR #)
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_aCO7 #)
 [GblId, Arity=2, Str=DmdType <L,U><L,U>, Unf=OtherCon []] =
     \r srt:SRT:[rI :-> Control.Concurrent.Fiber.Internal.block3,
-                rJ :-> Control.Concurrent.Fiber.Internal.block1] [ww_sEA6 w_sEA7]
+                rK :-> Control.Concurrent.Fiber.Internal.block1] [ww_sD3M w_sD3N]
         let {
-          a1_sEA8 [Occ=LoopBreaker]
+          a1_sD3O [Occ=LoopBreaker]
             :: GHC.Prim.State# GHC.Prim.RealWorld
-               -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_aDUR #)
+               -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_aCO7 #)
           [LclId, Arity=1, Str=DmdType <L,U>, Unf=OtherCon []] =
               \r srt:SRT:[rI :-> Control.Concurrent.Fiber.Internal.block3,
-                          rJ :-> Control.Concurrent.Fiber.Internal.block1] [s_sEA9]
-                  case tryTakeMVar# [ww_sEA6 s_sEA9] of _ [Occ=Dead] {
-                    (#,,#) ipv_sEAB [Occ=Once*]
-                           ipv1_sEAC [Occ=Once!]
-                           ipv2_sEAD [Occ=Once] ->
-                        case ipv1_sEAC of _ [Occ=Dead] {
+                          rK :-> Control.Concurrent.Fiber.Internal.block1] [s_sD3P]
+                  case tryTakeMVar# [ww_sD3M s_sD3P] of _ [Occ=Dead] {
+                    (#,,#) ipv_sD3R [Occ=Once*]
+                           ipv1_sD3S [Occ=Once!]
+                           ipv2_sD3T [Occ=Once] ->
+                        case ipv1_sD3S of _ [Occ=Dead] {
                           __DEFAULT ->
                               case
-                                  __primcall  eta.fibers.PrimOps.awakenMVarListeners [ww_sEA6
-                                                                                      ipv_sEAB]
+                                  __primcall  eta.fibers.PrimOps.awakenMVarListeners [ww_sD3M
+                                                                                      ipv_sD3R]
                               of
-                              s''_sEAG [OS=OneShot]
-                              { __DEFAULT -> (#,#) [s''_sEAG ipv2_sEAD];
+                              s''_sD3W [OS=OneShot]
+                              { __DEFAULT -> (#,#) [s''_sD3W ipv2_sD3T];
                               };
                           0 ->
                               case
-                                  __primcall  eta.fibers.PrimOps.addMVarListener [ww_sEA6 ipv_sEAB]
+                                  __primcall  eta.fibers.PrimOps.addMVarListener [ww_sD3M ipv_sD3R]
                               of
-                              s''_sEAI [OS=OneShot]
+                              s''_sD3Y [OS=OneShot]
                               { __DEFAULT ->
                                     case
                                         __primcall  eta.fibers.PrimOps.setCurrentC [Control.Concurrent.Fiber.Internal.block1
-                                                                                    s''_sEAI]
+                                                                                    s''_sD3Y]
                                     of
-                                    s1_sEAK [OS=OneShot]
+                                    s1_sD40 [OS=OneShot]
                                     { __DEFAULT ->
                                           let {
-                                            sat_sEAO [Occ=Once] :: GHC.Prim.Any
+                                            sat_sD44 [Occ=Once] :: GHC.Prim.Any
                                             [LclId, Str=DmdType] =
-                                                \r srt:SRT:[] [ds2_sEAM eta_sEAN] a1_sEA8 eta_sEAN;
+                                                \r srt:SRT:[] [ds2_sD42 eta_sD43] a1_sD3O eta_sD43;
                                           } in 
                                             case
-                                                __primcall  eta.fibers.PrimOps.pushNextC [sat_sEAO
-                                                                                          s1_sEAK]
+                                                __primcall  eta.fibers.PrimOps.pushNextC [sat_sD44
+                                                                                          s1_sD40]
                                             of
-                                            s2_sEAP [OS=OneShot]
+                                            s2_sD45 [OS=OneShot]
                                             { __DEFAULT ->
                                                   case
-                                                      __primcall  eta.fibers.PrimOps.popContStack [s2_sEAP]
+                                                      __primcall  eta.fibers.PrimOps.popContStack [s2_sD45]
                                                   of
                                                   _ [Occ=Dead]
-                                                  { (#,,#) ipv3_sEAS [Occ=Once*]
-                                                           ipv4_sEAT [Occ=Once!]
-                                                           ipv5_sEAU [Occ=Once] ->
-                                                        case ipv4_sEAT of _ [Occ=Dead] {
+                                                  { (#,,#) ipv3_sD48 [Occ=Once*]
+                                                           ipv4_sD49 [Occ=Once!]
+                                                           ipv5_sD4A [Occ=Once] ->
+                                                        case ipv4_sD49 of _ [Occ=Dead] {
                                                           __DEFAULT ->
                                                               case
-                                                                  __primcall  eta.fibers.PrimOps.popNextC [ipv3_sEAS]
+                                                                  __primcall  eta.fibers.PrimOps.popNextC [ipv3_sD48]
                                                               of
                                                               _ [Occ=Dead]
-                                                              { (#,#) ipv6_sEAY [Occ=Once]
+                                                              { (#,#) ipv6_sD4E [Occ=Once]
                                                                       _ [Occ=Dead] ->
                                                                     case
-                                                                        __primcall  eta.fibers.PrimOps.setCurrentC [a1_sEA8
-                                                                                                                    ipv6_sEAY]
+                                                                        __primcall  eta.fibers.PrimOps.setCurrentC [a1_sD3O
+                                                                                                                    ipv6_sD4E]
                                                                     of
-                                                                    s5_sEB1 [OS=OneShot]
-                                                                    { __DEFAULT -> a1_sEA8 s5_sEB1;
+                                                                    s5_sD4H [OS=OneShot]
+                                                                    { __DEFAULT -> a1_sD3O s5_sD4H;
                                                                     };
                                                               };
                                                           1 ->
                                                               let {
-                                                                sat_sEB3 [Occ=Once] :: GHC.Prim.Any
+                                                                sat_sD4J [Occ=Once] :: GHC.Prim.Any
                                                                 [LclId, Str=DmdType] =
                                                                     \u srt:SRT:[rI :-> Control.Concurrent.Fiber.Internal.block3] []
-                                                                        ipv5_sEAU
+                                                                        ipv5_sD4A
                                                                             Control.Concurrent.Fiber.Internal.block3;
                                                               } in 
                                                                 case
-                                                                    __primcall  eta.fibers.PrimOps.setCurrentC [sat_sEB3
-                                                                                                                ipv3_sEAS]
+                                                                    __primcall  eta.fibers.PrimOps.setCurrentC [sat_sD4J
+                                                                                                                ipv3_sD48]
                                                                 of
-                                                                s4_sEB4 [OS=OneShot]
+                                                                s4_sD4K [OS=OneShot]
                                                                 { __DEFAULT ->
                                                                       case
                                                                           __primcall  eta.fibers.PrimOps.yieldFiber [1
-                                                                                                                     s4_sEB4]
+                                                                                                                     s4_sD4K]
                                                                       of
-                                                                      wild_sEB6 [OS=OneShot]
+                                                                      wild_sD4M [OS=OneShot]
                                                                       { __DEFAULT ->
                                                                             case
-                                                                                __primcall  eta.fibers.PrimOps.popNextC [wild_sEB6]
+                                                                                __primcall  eta.fibers.PrimOps.popNextC [wild_sD4M]
                                                                             of
                                                                             _ [Occ=Dead]
-                                                                            { (#,#) ipv6_sEB9 [Occ=Once]
+                                                                            { (#,#) ipv6_sD4P [Occ=Once]
                                                                                     _ [Occ=Dead] ->
                                                                                   case
-                                                                                      __primcall  eta.fibers.PrimOps.setCurrentC [a1_sEA8
-                                                                                                                                  ipv6_sEB9]
+                                                                                      __primcall  eta.fibers.PrimOps.setCurrentC [a1_sD3O
+                                                                                                                                  ipv6_sD4P]
                                                                                   of
-                                                                                  s5_sEBC [OS=OneShot]
+                                                                                  s5_sD4S [OS=OneShot]
                                                                                   { __DEFAULT ->
-                                                                                        a1_sEA8
-                                                                                            s5_sEBC;
+                                                                                        a1_sD3O
+                                                                                            s5_sD4S;
                                                                                   };
                                                                             };
                                                                       };
@@ -271,25 +271,25 @@ Control.Concurrent.Fiber.MVar.$wa1 [InlPrag=[0]]
                               };
                         };
                   };
-        } in  a1_sEA8 w_sEA7;
+        } in  a1_sD3O w_sD3N;
 Control.Concurrent.Fiber.MVar.takeMVar1 [InlPrag=INLINE[0]]
-  :: forall a_aDUR.
-     GHC.MVar.MVar a_aDUR
+  :: forall a_aCO7.
+     GHC.MVar.MVar a_aCO7
      -> GHC.Prim.State# GHC.Prim.RealWorld
-     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_aDUR #)
+     -> (# GHC.Prim.State# GHC.Prim.RealWorld, a_aCO7 #)
 [GblId, Arity=2, Str=DmdType <S,1*U(U)><L,U>, Unf=OtherCon []] =
-    \r srt:SRT:[rC9D :-> Control.Concurrent.Fiber.MVar.$wa1] [w_sEBD
-                                                              w1_sEBE]
-        case w_sEBD of _ [Occ=Dead] {
-          GHC.MVar.MVar ww1_sEBG [Occ=Once] ->
-              Control.Concurrent.Fiber.MVar.$wa1 ww1_sEBG w1_sEBE;
+    \r srt:SRT:[rB15 :-> Control.Concurrent.Fiber.MVar.$wa1] [w_sD4T
+                                                              w1_sD4U]
+        case w_sD4T of _ [Occ=Dead] {
+          GHC.MVar.MVar ww1_sD4W [Occ=Once] ->
+              Control.Concurrent.Fiber.MVar.$wa1 ww1_sD4W w1_sD4U;
         };
 Control.Concurrent.Fiber.MVar.takeMVar
-  :: forall a_aDSW.
-     GHC.MVar.MVar a_aDSW
-     -> Control.Concurrent.Fiber.Internal.Fiber a_aDSW
+  :: forall a_aCMC.
+     GHC.MVar.MVar a_aCMC
+     -> Control.Concurrent.Fiber.Internal.Fiber a_aCMC
 [GblId, Arity=2, Str=DmdType <S,1*U(U)><L,U>, Unf=OtherCon []] =
-    \r srt:SRT:[rDRK :-> Control.Concurrent.Fiber.MVar.takeMVar1] [eta_B2
+    \r srt:SRT:[rCKZ :-> Control.Concurrent.Fiber.MVar.takeMVar1] [eta_B2
                                                                    eta_B1]
         Control.Concurrent.Fiber.MVar.takeMVar1 eta_B2 eta_B1;
 

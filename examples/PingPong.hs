@@ -20,7 +20,10 @@ import Control.Exception (throw)
 main = do
   
   keep $ do 
-     r <- empty <|>  async ( liftIO (threadDelay 1000000) >>return " world") 
+     r <-   (async (return "hello")
+         <> async (return " world") 
+         <> async (return " world2"))  
+         <|>  return "Alternative"
      --th2 <- liftIO  myThreadId !> "MYTHREAD"
      liftIO $ print r
 

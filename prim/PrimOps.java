@@ -54,7 +54,7 @@ public class PrimOps {
 
 
 
-    public static Closure[] getStack(StgContext context){
+    public static Object getStackC(StgContext context){
         Closure[] newContStack = new Closure[context.currentTSO.contStackTop];
         System.arraycopy(context.currentTSO.contStack,0,newContStack,0, context.currentTSO.contStackTop);
         return newContStack;
@@ -70,8 +70,8 @@ public class PrimOps {
         return context.currentTSO;
     }
 
-    public static void setConstStackCC(StgContext context, int top, Closure[] newContStack,Closure current){ 
-        context.currentTSO.contStack= newContStack;
+    public static void setContStack(StgContext context, int top, Object newContStack,Closure current){ 
+        context.currentTSO.contStack= (Closure[]) newContStack;
         context.currentTSO.contStackTop= top;
         context.currentTSO.currentCont = current;
 
@@ -79,19 +79,14 @@ public class PrimOps {
     
     public static Closure getEventCC(StgContext context){
         Closure v= tsoEvent.get(context.currentTSO);
-        System.out.println("getEvent");
-        System.out.println(v);
-
         if (v==null)  context.I1 = 0; else context.I1 = 1;
         return v;
     }
     public static void setEventC(StgContext context,Closure ev){
-        System.out.println("setEvent");
         tsoEvent.put(context.currentTSO,ev);
     }
     
     public static void delEventCC(StgContext context){
-        System.out.println("delEvent");
         tsoEvent.remove(context.currentTSO);
     }
 
