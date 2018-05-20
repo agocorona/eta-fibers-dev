@@ -8,6 +8,7 @@ import Unsafe.Coerce
 import Data.Typeable
 import Control.Concurrent
 import Control.Exception
+import Control.Applicative
 import Control.Monad.IO.Class
 import Data.Monoid hiding (Any)
 import Java.Core
@@ -138,23 +139,50 @@ resumeFiber = Fiber $ \s ->
                      (# s3, a' #) -> go a' s3
             (# s1, _, _ #) -> s1
 
+react
+    :: Typeable eventdata
+    => ((eventdata ->  IO response) -> IO ())
+    -> IO  response
+    -> Fiber eventdata
+react setHandler iob= liftIO $ do
+              mev <- getEvent
+              case mev of
+                Nothing -> do
+                    I# top <- topStack
+                    Obj stack <- getStack
+                    curr  <- getCurrent
+                    setHandler $ \dat ->do
+                                    forkCont (return dat) top stack curr  -- make sure TSO info is in 
+                                    iob
+                    throwEmpty
+      
+                Just ev -> do
+                    delEvent
+                    return $ unsafeCoerce ev
+        
+    where
+    
+
 async :: IO a -> Fiber a 
 async io= liftIO $ do 
     mev <- getEvent 
     case mev of
 
       Nothing -> do 
-                forkCont io
+                forkCont' io
                 throwEmpty 
       Just ev -> do 
             delEvent
             return ev
     
-     where
-     forkCont io= do
+    where
+    forkCont' io= do 
         I# top <- topStack
         Obj stack <- getStack
         curr  <- getCurrent
+        forkCont io top stack curr 
+
+forkCont io top stack curr= do
         forkIO' $ do
           setTSO  top   stack curr 
           ev <- io
@@ -165,12 +193,14 @@ async io= liftIO $ do
          `catchEmpty`  return ()
             
         return()
-     
-     forkIO' (IO mx)= IO $ \s -> case fork# mx s of  (# s1, tid #) -> (# s1, ThreadId tid #)
-     topStack= IO $ \s -> case topStack# s of (#s1, i #) -> (# s1, I# i #)  
-     getStack= IO $ \s -> case getStack# s of (#s1, arr #) -> (#s1, Obj arr #) 
-     getCurrent= IO $ \s -> getCurrentC# s
+     where
      setTSO   top stack current  = IO $ \s -> case setContStack# top stack current  s of s2 ->  (# s2, () #)
+      
+     forkIO' (IO mx)= IO $ \s -> case fork# mx s of  (# s1, tid #) -> (# s1, ThreadId tid #)
+     
+topStack= IO $ \s -> case topStack# s of (#s1, i #) -> (# s1, I# i #)  
+getStack= IO $ \s -> case getStack# s of (#s1, arr #) -> (#s1, Obj arr #) 
+getCurrent= IO $ \s -> getCurrentC# s
 
 data Obj = Obj (Object# Object)
 
@@ -237,13 +267,40 @@ getEvent = IO $ \s -> case getEvent#  s of
 delEvent= IO $ \s -> case delEvent# s of  s1->  (# s1,() #)
 
 
--- catchf :: Exception e => Fiber a -> (e -> Fiber a) -> Fiber a
--- catchf (Fiber exp)  exc=  
---     case IO exp `catch` (\e -> case exc e  of  Fiber r -> IO r) of
---         (IO r) -> Fiber r
-        
--- Runtime primitives
+catchf :: Exception e => Fiber a -> (e -> Fiber a) -> Fiber a
+catchf (Fiber exp)  exc=  
+    case IO exp `catch` (\e -> case exc e  of  Fiber r -> IO r) of
+        (IO r) -> Fiber r
 
+
+-- -- pure state
+
+-- data State= State  (State# RealWorld)
+-- getData :: Typeable a => Fiber (Maybe a)
+-- getData = resp
+--   where 
+--   -- get :: Fiber [(TypeRep,())]
+--   get= Fiber  $ \s -> (# s,  State s #) 
+    
+--   resp = do
+--           st <- get
+--           let list= unsafeCoerce st
+--           case lookup (typeOf $ typeResp resp) list of
+--             Just x  -> return . Just $ unsafeCoerce x
+--             Nothing -> return Nothing
+--   typeResp :: m (Maybe x) -> x
+--   typeResp = undefined
+-- -- Runtime primitives
+-- setData x =  do
+--     st' <- get
+--     let st= unsafeCoerce st'
+--     let nelem=  (t ,unsafeCoerce x)
+--     put $ State $ nelem : filter ((/=) t . fst) st
+--     where 
+--     t = typeOf x
+--     get= Fiber  $ \s -> (# s, State s #) 
+--     put (State x)= Fiber $ \_ -> (# x,() #)
+    
 data {-# CLASS "java.util.Stack" #-} Stack
 
 type Stack# = Object# Stack

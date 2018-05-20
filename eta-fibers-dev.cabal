@@ -30,8 +30,8 @@ library
                        UnliftedFFITypes
   ghc-options:         -ddump-stg -ddump-to-file
   
-executable  PingPong
-    main-is: PingPong.hs
+executable  threadring
+    main-is: threadring.hs
     build-depends:
         base >=4.8 && <4.9
       , transformers
